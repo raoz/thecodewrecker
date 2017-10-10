@@ -1,21 +1,27 @@
 import javafx.util.Pair;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-public interface Decrypter {
-    static Class[] decrypters = new Class[CaesarDecrypter]; //List the default decrypters
-    public Decryption decrypt(String s);
-    static Decryption findBest() {
-        for(Decrypter)
-        try {
-            decrypters[0].getMethod("findBest").invoke(""));
+public abstract class Decrypter {
+    Class[] decrypters = new Class[]{CaesarDecrypter.class}; //List the default decrypters
+    abstract Decryption decrypt(String s);
+    public Decryption findBest() {
+        List<Decryption> decryptionList = new ArrayList<Decryption>();
+        for(Class c : decrypters) {
+            try {
+                decryptionList.add((Decryption)c.getMethod("findBest").invoke(""));
 
-        } catch (NoSuchMethodException e) {
-            System.out.println("Invalid decrypter in default decrypter list!");
-        } catch (IllegalAccessException e) {
-            System.out.println("Invalid decrypter in default decrypter list!");
-        } catch (InvocationTargetException e) {
-            System.out.println("Invalid decrypter in default decrypter list!");
+            } catch (NoSuchMethodException e) {
+                System.out.println("Invalid decrypter in default decrypter list!");
+            } catch (IllegalAccessException e) {
+                System.out.println("Invalid decrypter in default decrypter list!");
+            } catch (InvocationTargetException e) {
+                System.out.println("Invalid decrypter in default decrypter list!");
+            }
         }
+        return decryptionList.stream().sorted().findFirst().get(); //get the first one in the sorted(desc by conf) list
     }
 }
