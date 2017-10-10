@@ -4,7 +4,7 @@ Aren't you glad you read me?
 
 ### What is this repository for? ###
 
-See programm hakkab murdma lihtsamaid siffreid, näiteks Caesari sifrit.
+See programm hakkab murdma lihtsamaid šifreid, näiteks Caesari šifrit.
 Versioon: 0.0
 
 ### How do I get set up? ###
