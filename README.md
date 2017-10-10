@@ -10,9 +10,9 @@ Versioon: 0.0
 ### How do I get set up? ###
 
 Not yet you don't...
-'''
+```
 make
-'''
+```
 
 ### Contribution guidelines ###
 
