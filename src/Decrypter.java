@@ -1,8 +1,5 @@
-import javafx.util.Pair;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public abstract class Decrypter {
