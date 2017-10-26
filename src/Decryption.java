@@ -3,6 +3,13 @@ public class Decryption implements Comparable<Decryption>{
     private String plaintext;
     private Decrypter creator;
 
+    public Decryption(String plaintext, Decrypter creator) {
+        this.plaintext = plaintext;
+        this.creator = creator;
+        this.confidence = 0; //TODO: Implement confidence calculation
+
+    }
+
     public double getConfidence() {
         return confidence;
     }
