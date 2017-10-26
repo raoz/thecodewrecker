@@ -1,5 +1,5 @@
 import java.util.Map;
-
+//TODO: this class
 public class SubstitutionEncrypter implements KeyedEncrypter{
     Map<Character, Character> key;
     public SubstitutionEncrypter(String key) {

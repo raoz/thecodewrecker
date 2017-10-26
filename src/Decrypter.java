@@ -5,14 +5,14 @@ import java.util.List;
 
 import static java.util.Comparator.comparing;
 
-public abstract class Decrypter {
-    private static final Class[] decrypters = new Class[]{CaesarDecrypter.class}; //List the default decrypters
+public interface Decrypter {
+    Class[] decrypters = new Class[]{CaesarDecrypter.class}; //List the default decrypters
 
     /**
      * @param s The string to decrypt
      * @return A Decryption containing the decrypted string
      */
-    abstract Decryption decrypt(String s);
+    Decryption decrypt(String s);
 
     /**
      * Find n best-matching decryptions for a given string using different decrypters
@@ -20,7 +20,7 @@ public abstract class Decrypter {
      * @param n The number of decryptions to find
      * @return An array of the found decryptions
      */
-    public static Decryption[] findBest(String s, int n) {
+    static Decryption[] findBest(String s, int n) {
         List<Decryption> decryptions = new ArrayList<Decryption>();
         for(Class c : decrypters) { //For every decrypter
             try {

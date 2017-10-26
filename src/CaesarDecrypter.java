@@ -1,7 +1,7 @@
 
 import java.util.Arrays;
 
-public class CaesarDecrypter extends KeyedDecrypter{
+public class CaesarDecrypter implements KeyedDecrypter{
     private int key;
 
     /**
