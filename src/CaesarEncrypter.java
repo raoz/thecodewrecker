@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class CaesarEncrypter extends KeyedEncrypter{
+public class CaesarEncrypter extends KeyedEncrypter {
     public CaesarEncrypter(int shifter){
         super(shifter);
     }
