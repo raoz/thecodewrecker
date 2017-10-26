@@ -1,6 +1,6 @@
 import java.util.Map;
 
-public class SubstitutionEncrypter extends KeyedEncrypter{
+public class SubstitutionEncrypter implements KeyedEncrypter{
     Map<Character, Character> key;
     public SubstitutionEncrypter(String key) {
         super();

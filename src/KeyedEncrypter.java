@@ -1,3 +1,3 @@
-abstract class KeyedEncrypter implements Encrypter{
+interface KeyedEncrypter extends Encrypter{
 
 }
