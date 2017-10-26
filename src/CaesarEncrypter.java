@@ -1,8 +1,10 @@
 import java.util.Scanner;
 
 public class CaesarEncrypter extends KeyedEncrypter {
-    public CaesarEncrypter(int shifter){
-        super(shifter);
+    private int key;
+    public CaesarEncrypter(int key){
+        super();
+        this.key = key;
     }
 
     @Override
@@ -11,10 +13,10 @@ public class CaesarEncrypter extends KeyedEncrypter {
         for (int i = 0; i < s.length(); i++){
             int c = (int)s.charAt(i);
             if (Character.isUpperCase(c)){
-                c = (c - (int)'A' + getKey())%26 + (int)'A';
+                c = (c - (int)'A' + key)%26 + (int)'A';
             }
             else if (Character.isLowerCase(c)){
-                c = (c - (int)'a' + getKey())%26 + (int)'a';
+                c = (c - (int)'a' + key)%26 + (int)'a';
             }
             sb.append((char)c);
 
@@ -22,19 +24,6 @@ public class CaesarEncrypter extends KeyedEncrypter {
         String encrypted = sb.toString();
 
         return encrypted;
-    }
-
-    @Override
-    public Integer getKey() {
-        return (int)super.getKey();
-    }
-
-    @Override
-    public void setKey(Object key) {
-        if (!(key instanceof Integer)){
-            throw new IllegalArgumentException("Caesar shifter needs an integer!");
-        }
-        super.setKey(key);
     }
 
     public static void main(String[] args) {

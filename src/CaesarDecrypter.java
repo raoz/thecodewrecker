@@ -2,6 +2,7 @@
 import java.util.Arrays;
 
 public class CaesarDecrypter extends KeyedDecrypter{
+    private int key;
 
     /**
      * @param s The string to decrypt
@@ -18,7 +19,8 @@ public class CaesarDecrypter extends KeyedDecrypter{
     }
 
     public CaesarDecrypter(Integer key) {
-        this.setKey(key);
+        super();
+        this.key = key;
     }
 
     /**
@@ -28,22 +30,9 @@ public class CaesarDecrypter extends KeyedDecrypter{
     @Override
     public Decryption decrypt(String s) {
         //Decryption is the same as encryption with reverse key
-        CaesarEncrypter ce = new CaesarEncrypter(-getKey());
+        CaesarEncrypter ce = new CaesarEncrypter(-this.key);
         System.out.println(ce.encrypt(s));
         return new Decryption(ce.encrypt(s), this);
     }
 
-    @Override
-    public Integer getKey() {
-        return (Integer)super.getKey();
-    }
-
-    @Override
-    public void setKey(Object key) {
-        if(key instanceof Integer) {
-            super.setKey(key);
-        } else {
-            throw new IllegalArgumentException("CaesarDecrypter key must be Integer");
-        }
-    }
 }
