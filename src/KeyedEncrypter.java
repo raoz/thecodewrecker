@@ -12,4 +12,7 @@ abstract class KeyedEncrypter implements Encrypter{
     public void setKey(Object key) {
         this.key = key;
     }
+    public String encrypt(String s){
+        return "";
+    }
 }
