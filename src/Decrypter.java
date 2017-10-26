@@ -1,5 +1,6 @@
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Decrypter {
@@ -9,16 +10,16 @@ public abstract class Decrypter {
         List<Decryption> decryptionList = new ArrayList<Decryption>();
         for(Class c : decrypters) {
             try {
-                decryptionList.add((Decryption[])c.getMethod("findBest").invoke(null, s, n);
+                Arrays.stream((Decryption[]) (c.getMethod("findBest", String.class, int.class).invoke(null, s, n))).forEach(decryptionList::add);
 
             } catch (NoSuchMethodException e) {
-                System.out.println("Invalid decrypter in default decrypter list!");
+                System.out.println("Invalid decrypter in default decrypter list!\n" + e);
             } catch (IllegalAccessException e) {
-                System.out.println("Invalid decrypter in default decrypter list!");
+                System.out.println("Invalid decrypter in default decrypter list!\n" + e);
             } catch (InvocationTargetException e) {
-                System.out.println("Invalid decrypter in default decrypter list!");
+                System.out.println("Decrypter error:\n" + e.getCause());
             }
         }
-        return (Decryption[])decryptionList.stream().sorted().limit(n).toArray(); //get the first one in the sorted(desc by conf) list
+        return decryptionList.stream().sorted().limit(n).toArray(Decryption[]::new); //get the first one in the sorted(desc by conf) list
     }
 }

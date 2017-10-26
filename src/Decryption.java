@@ -10,6 +10,11 @@ public class Decryption implements Comparable<Decryption>{
 
     }
 
+    @Override
+    public String toString() {
+        return "--------Decryption with confidence " + confidence + " and algorithm " + creator + "\n" + plaintext;
+    }
+
     public double getConfidence() {
         return confidence;
     }

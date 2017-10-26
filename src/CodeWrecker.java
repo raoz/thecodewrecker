@@ -2,6 +2,10 @@
 public class CodeWrecker {
     public static void main(String[] args) {
         String in = Util.readWholeStream(System.in);
-        Decrypter.findBest(in, 3);
+        System.out.println(in);
+        Decryption[] ds = Decrypter.findBest(in, 26);
+        for (Decryption d : ds) {
+            System.out.println(d);
+        }
     }
 }

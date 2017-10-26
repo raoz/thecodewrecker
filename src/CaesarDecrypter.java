@@ -15,7 +15,7 @@ public class CaesarDecrypter extends KeyedDecrypter{
         for(int i = 0; i < 26; ++i) {
             decryptions[i] = new CaesarDecrypter(i).decrypt(s);
         }
-        return (Decryption[])Arrays.stream(decryptions).sorted().limit(n).toArray(); //Take n first from the sorted arr
+        return Arrays.stream(decryptions).sorted().limit(n).toArray(Decryption[]::new); //Take n first from the sorted arr
     }
 
     public CaesarDecrypter(Integer key) {
@@ -30,6 +30,7 @@ public class CaesarDecrypter extends KeyedDecrypter{
     public Decryption decrypt(String s) {
         //Decryption is the same as encryption with reverse key
         CaesarEncrypter ce = new CaesarEncrypter(-getKey());
+        System.out.println(ce.encrypt(s));
         return new Decryption(ce.encrypt(s), this);
     }
 
