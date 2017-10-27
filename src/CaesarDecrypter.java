@@ -1,6 +1,9 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
 
 public class CaesarDecrypter implements KeyedDecrypter {
     private int key;
@@ -22,7 +25,8 @@ public class CaesarDecrypter implements KeyedDecrypter {
         for (int i = 0; i < 26; ++i) {
             decryptions[i] = new CaesarDecrypter(i).decrypt(s);
         }
-        return Arrays.stream(decryptions).sorted().limit(n).collect(Collectors.toList()); //Take n first from the sorted arr
+        return Arrays.stream(decryptions).sorted(comparing(Decryption::getConfidence).reversed()).//Sort by confidence descending
+                limit(n).collect(Collectors.toList()); //Take n first from the sorted arr
     }
 
     /**

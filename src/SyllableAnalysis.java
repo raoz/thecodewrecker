@@ -59,6 +59,7 @@ public class SyllableAnalysis implements Analysis{
                 b.append(key);
                 b.append('\t');
                 b.append(value);
+                b.append('\n');
             });
         }
         return b.toString();
