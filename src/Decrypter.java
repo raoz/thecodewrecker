@@ -22,6 +22,7 @@ public interface Decrypter {
      *
      * @param s The string to find decryptions for
      * @param n The number of decryptions to find
+     * @param analysis Analysis to use for getting confidence and finding decrypters
      * @return An array of the found decryptions
      */
     static Decryption[] findBest(String s, int n, Analysis analysis) {
