@@ -1,8 +1,6 @@
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static java.util.Comparator.comparing;
 
 public class CaesarDecrypter implements KeyedDecrypter {
@@ -18,7 +16,6 @@ public class CaesarDecrypter implements KeyedDecrypter {
      * @param n How many decryptions to return
      * @return The n best Caesar decryptions of s
      */
-    @SuppressWarnings("unused") //This method is called via reflection
     public static List<Decryption> findBest(String s, int n, Analysis analysis) {
         //Try all possible keys
         Decryption[] decryptions = new Decryption[26];
@@ -26,7 +23,7 @@ public class CaesarDecrypter implements KeyedDecrypter {
             decryptions[i] = new CaesarDecrypter(i).decrypt(s);
         }
         return Arrays.stream(decryptions).sorted(comparing(Decryption::getConfidence).reversed()).//Sort by confidence descending
-                limit(n).collect(Collectors.toList()); //Take n first from the sorted arr
+                limit(n).collect(Collectors.toList()); //Take n first from the sorted stream
     }
 
     /**
