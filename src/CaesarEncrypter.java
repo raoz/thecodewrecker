@@ -25,11 +25,8 @@ public class CaesarEncrypter implements KeyedEncrypter {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             int c = (int) s.charAt(i);
-            if (Character.isUpperCase(c)) {
-                c = (c - (int) 'A' + key) % 26 + (int) 'A';
-            } else if (Character.isLowerCase(c)) {
-                c = (c - (int) 'a' + key) % 26 + (int) 'a';
-            }
+            Character identity = Character.isUpperCase(c) ? 'A' : 'a';
+            c = (c - (int)identity + key) % 26 + (int)identity;
             sb.append((char) c);
 
         }
