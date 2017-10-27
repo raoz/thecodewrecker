@@ -1,6 +1,4 @@
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -26,13 +24,12 @@ public interface Decrypter {
      * @return An array of the found decryptions
      */
     static Decryption[] findBest(String s, int n, Analysis analysis) {
-        List<Decryption> decryptions = new ArrayList<Decryption>();
+        List<Decryption> decryptions = new ArrayList<>();
         for (Util.TriFunction<String, Integer, Analysis, List<Decryption>> fBest : decrypters) { //For every decrypter
             try {
-                fBest.apply( s, n, analysis) //Call that method with the same parameters
-                .forEach(decryptions::add); //Of the results, add each one to the list
+                decryptions.addAll(fBest.apply( s, n, analysis));
             } catch (InsufficientDataException e) {
-                System.out.println(e);
+                System.out.println("Insufficient data for " + fBest.getClass().getSimpleName() + ": " + e.getMessage());
             }
         }
         return decryptions.stream().

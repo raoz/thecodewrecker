@@ -1,10 +1,10 @@
 /**
- * Representation of a decryption, containing the plaintext, the confidence, and the decryptor used
+ * Representation of a decryption, containing the plaintext, the confidence, and the decrypter used
  */
 public class Decryption implements Comparable<Decryption> {
-    private double confidence;
-    private String plaintext;
-    private Decrypter creator;
+    private final double confidence;
+    private final String plaintext;
+    private final Decrypter creator;
 
     /**
      * @param plaintext The result of decryption
@@ -37,7 +37,7 @@ public class Decryption implements Comparable<Decryption> {
     }
 
     /**
-     * @return The decryptor used to generate this decryption
+     * @return The decrypter used to generate this decryption
      */
     public Decrypter getCreator() {
         return creator;

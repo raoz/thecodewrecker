@@ -7,11 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SubstitutionDecrypter implements KeyedDecrypter {
-    private HashMap<Character, Character> key;
-    private Map<Character, Character> reverseKey;
+    private final Map<Character, Character> reverseKey;
 
     public SubstitutionDecrypter(HashMap<Character, Character> key) {
-        this.key = key;
         this.reverseKey = key.entrySet().stream() //From the stream of entries
                 .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey)); //get the reverse
     }

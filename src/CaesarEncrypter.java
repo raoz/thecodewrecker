@@ -30,8 +30,7 @@ public class CaesarEncrypter implements KeyedEncrypter {
             sb.append((char) c);
 
         }
-        String encrypted = sb.toString();
 
-        return encrypted;
+        return sb.toString();
     }
 }
