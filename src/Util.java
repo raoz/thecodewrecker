@@ -24,4 +24,13 @@ public class Util {
             return (T t, U u, V v) -> after.apply(apply(t,u,v));
         }
     }
+
+    /**
+     * Reverses a given string
+     * @param s String to reverse
+     * @return The reversed string
+     */
+    public static String reverseString(String s) {
+        return new StringBuilder(s).reverse().toString();
+    }
 }
