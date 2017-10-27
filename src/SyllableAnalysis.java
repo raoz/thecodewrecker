@@ -18,7 +18,6 @@ public class SyllableAnalysis implements Analysis{
        List<String> syllables = naïveSyllables(s);
        this.markovTable = new HashMap<>();
        for (int i = 0; i < syllables.size() - 1; i++) { //Iterate over every adjacent pair of syllables
-           Map<String, Double> occTab;
            String syl = syllables.get(i);
            String syln = syllables.get(i+1);
            markovTable.putIfAbsent(syl, new HashMap<>());
