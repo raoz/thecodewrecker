@@ -1,4 +1,9 @@
+/**
+ * Exception thrown when a method or class is not provided with sufficient data to work.
+ */
 public class InsufficientDataException extends RuntimeException {
+    //Default Throwable constructors
+
     public InsufficientDataException() {
     }
 
