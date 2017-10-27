@@ -1,0 +1,20 @@
+public class InsufficientDataException extends RuntimeException {
+    public InsufficientDataException() {
+    }
+
+    public InsufficientDataException(String message) {
+        super(message);
+    }
+
+    public InsufficientDataException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public InsufficientDataException(Throwable cause) {
+        super(cause);
+    }
+
+    public InsufficientDataException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+}

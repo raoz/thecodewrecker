@@ -1,5 +1,6 @@
 
 import java.util.Arrays;
+import java.util.List;
 
 public class CaesarDecrypter implements KeyedDecrypter{
     private int key;
@@ -9,7 +10,8 @@ public class CaesarDecrypter implements KeyedDecrypter{
      * @param n How many decryptions to return
      * @return The n best Caesar decryptions of s
      */
-    public static Decryption[] findBest(String s, int n) {
+    @SuppressWarnings("unused") //This method is called via reflection
+    public static Decryption[] findBest(String s, int n, Analysis analysis) {
         //Try all possible keys
         Decryption[] decryptions = new Decryption[26];
         for(int i = 0; i < 26; ++i) {

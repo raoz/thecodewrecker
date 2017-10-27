@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class FrequencyAnalysis {
+public class FrequencyAnalysis implements Analysis{
     static Map<Character, Double> frequencyMap(String s, boolean ignoreCase){
         Map<Character, Double> map = new HashMap<>();
         if (ignoreCase){
@@ -21,7 +21,6 @@ public class FrequencyAnalysis {
         return map;
     }
     public static void main(String[] args){
-        FrequencyAnalysis fa = new FrequencyAnalysis();
         String in = Util.readWholeStream(System.in);
         System.out.println(frequencyMap(in, true));
     }
