@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class Util {
     /**
      * Reads the whole stream
+     *
      * @param s InputStream to read
      * @return Contents as a String
      */

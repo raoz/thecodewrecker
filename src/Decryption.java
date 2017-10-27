@@ -1,14 +1,14 @@
 /**
  * Representation of a decryption, containing the plaintext, the confidence, and the decryptor used
  */
-public class Decryption implements Comparable<Decryption>{
+public class Decryption implements Comparable<Decryption> {
     private double confidence;
     private String plaintext;
     private Decrypter creator;
 
     /**
      * @param plaintext The result of decryption
-     * @param creator The Decrypter used to decrypt
+     * @param creator   The Decrypter used to decrypt
      */
     public Decryption(String plaintext, Decrypter creator) {
         this.plaintext = plaintext;

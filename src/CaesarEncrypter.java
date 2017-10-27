@@ -2,28 +2,10 @@ import java.util.Scanner;
 
 public class CaesarEncrypter implements KeyedEncrypter {
     private int key;
-    public CaesarEncrypter(int key){
+
+    public CaesarEncrypter(int key) {
         super();
         this.key = key;
-    }
-
-    @Override
-    public String encrypt(String s) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.length(); i++){
-            int c = (int)s.charAt(i);
-            if (Character.isUpperCase(c)){
-                c = (c - (int)'A' + key)%26 + (int)'A';
-            }
-            else if (Character.isLowerCase(c)){
-                c = (c - (int)'a' + key)%26 + (int)'a';
-            }
-            sb.append((char)c);
-
-        }
-        String encrypted = sb.toString();
-
-        return encrypted;
     }
 
     public static void main(String[] args) {
@@ -36,5 +18,23 @@ public class CaesarEncrypter implements KeyedEncrypter {
         System.out.println("Please enter a message to encrypt: ");
         String message = scan.nextLine();
         System.out.println(encrypter1.encrypt(message));
+    }
+
+    @Override
+    public String encrypt(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            int c = (int) s.charAt(i);
+            if (Character.isUpperCase(c)) {
+                c = (c - (int) 'A' + key) % 26 + (int) 'A';
+            } else if (Character.isLowerCase(c)) {
+                c = (c - (int) 'a' + key) % 26 + (int) 'a';
+            }
+            sb.append((char) c);
+
+        }
+        String encrypted = sb.toString();
+
+        return encrypted;
     }
 }
