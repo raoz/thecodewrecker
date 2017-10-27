@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CompoundAnalysis {
+public class CompoundAnalysis implements Analysis{
     private List<Analysis> analyses;
 
     public CompoundAnalysis(List<Analysis> analyses) {
