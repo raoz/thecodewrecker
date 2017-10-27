@@ -17,7 +17,7 @@ public class SubstitutionDecrypter implements KeyedDecrypter {
     }
 
     @SuppressWarnings("unused") //This method is called via reflection
-    public static Decryption[] findBest(String s, int n, Analysis analysis) {
+    public static List<Decryption> findBest(String s, int n, Analysis analysis) {
         List<FrequencyAnalysis> frequencyAnalyses = new ArrayList<>();
         if (analysis instanceof FrequencyAnalysis) { //If the analysis is single, put it in the list
             frequencyAnalyses.add((FrequencyAnalysis) analysis);

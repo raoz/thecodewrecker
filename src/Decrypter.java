@@ -12,7 +12,10 @@ public interface Decrypter {
     /**
      * A list of different decrypter classes
      */
-    Class[] decrypters = new Class[]{CaesarDecrypter.class, SubstitutionDecrypter.class}; //List the default decrypters
+    List<Util.TriFunction<String, Integer, Analysis, List<Decryption>>> decrypters = new ArrayList<>();
+    static void registerDecrypterFinder(Util.TriFunction<String, Integer, Analysis, List<Decryption>> d) {
+        decrypters.add(d);
+    }
 
     /**
      * Find n best-matching decryptions for a given string using different decrypters
@@ -23,18 +26,12 @@ public interface Decrypter {
      */
     static Decryption[] findBest(String s, int n, Analysis analysis) {
         List<Decryption> decryptions = new ArrayList<Decryption>();
-        for (Class c : decrypters) { //For every decrypter
+        for (Util.TriFunction<String, Integer, Analysis, List<Decryption>> fBest : decrypters) { //For every decrypter
             try {
-                Arrays.stream(
-                        (Decryption[]) (c.getMethod("findBest", String.class, int.class, Analysis.class). //Take the "findBest(String, int)" method of the decrypter
-                                invoke(null, s, n, analysis)) //Call that method with the same parameters
-                ).forEach(decryptions::add); //Of the results, add each one to the list
-            } catch (NoSuchMethodException e) {
-                System.out.println("Invalid decrypter in default decrypter list!\n" + e);
-            } catch (IllegalAccessException e) {
-                System.out.println("Invalid decrypter in default decrypter list!\n" + e);
-            } catch (InvocationTargetException e) {
-                System.out.println("Decrypter error:\n" + e.getCause());
+                fBest.apply( s, n, analysis) //Call that method with the same parameters
+                .forEach(decryptions::add); //Of the results, add each one to the list
+            } catch (InsufficientDataException e) {
+                System.out.println(e);
             }
         }
         return decryptions.stream().

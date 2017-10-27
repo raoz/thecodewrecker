@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CaesarDecrypter implements KeyedDecrypter {
     private int key;
@@ -14,13 +16,13 @@ public class CaesarDecrypter implements KeyedDecrypter {
      * @return The n best Caesar decryptions of s
      */
     @SuppressWarnings("unused") //This method is called via reflection
-    public static Decryption[] findBest(String s, int n, Analysis analysis) {
+    public static List<Decryption> findBest(String s, int n, Analysis analysis) {
         //Try all possible keys
         Decryption[] decryptions = new Decryption[26];
         for (int i = 0; i < 26; ++i) {
             decryptions[i] = new CaesarDecrypter(i).decrypt(s);
         }
-        return Arrays.stream(decryptions).sorted().limit(n).toArray(Decryption[]::new); //Take n first from the sorted arr
+        return Arrays.stream(decryptions).sorted().limit(n).collect(Collectors.toList()); //Take n first from the sorted arr
     }
 
     /**
