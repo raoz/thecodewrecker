@@ -35,6 +35,5 @@ public class FrequencyAnalysis<T> implements Analysis{
 
     @Override
     public void fromString(String lines) {
-        return;
     }
 }

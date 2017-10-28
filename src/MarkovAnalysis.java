@@ -82,25 +82,25 @@ public class MarkovAnalysis<T> implements Analysis{
      */
     @Override
     public void fromString(String s) {
-        Function<String, T> read = tokenizer.andThen(a -> a.stream().findFirst().get()); //Get the first token
+        Function<String, T> read = tokenizer.andThen(a -> a.stream().findFirst().orElse(null)); //Get the first token
         Scanner scan = new Scanner(s);
         T token = null;
         Map<T, Long> sOccTable = null;
-        Map<T, Map<T,Long>> occtable = new HashMap<>();
         while(scan.hasNextLine()) {
             String l = scan.nextLine();
             if(l.charAt(0) != '\t') {
                 if(sOccTable != null) {
-                    occtable.put(token, sOccTable);
+                    markovOccTable.put(token, sOccTable);
                 }
                 token = read.apply(l.trim());
                 sOccTable = new HashMap<>();
             } else {
                 String[] split = l.split(" \n");
+                assert sOccTable != null;
                 sOccTable.put(read.apply(split[0]),Long.parseLong(split[1]));
             }
         }
-        occtable.put(token, sOccTable);
+        markovOccTable.put(token, sOccTable);
     }
 
     public static void main(String[] args) throws IOException {
