@@ -1,10 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MarkovAnalysis<T> implements Analysis{
     private Function<String, List<T>> tokenizer;
@@ -80,5 +80,31 @@ public class MarkovAnalysis<T> implements Analysis{
             sa.addData(line);
         }
         System.out.println(sa);
+    }
+
+    @Override
+    public double similarity(String other) {
+        return this.similarity(new MarkovAnalysis<>(other, tokenizer));
+    }
+
+    public double similarity(MarkovAnalysis<T> other) {
+        Map<T, Map<T, Double>> f1 = this.getData();
+        Map<T, Map<T, Double>> f2 = other.getData();
+        Set<T> tokens = Stream.concat(f1.keySet().stream(), f2.keySet().stream()).collect(Collectors.toSet());
+        double difference = 0;
+        for (T token : tokens) {
+            if(!(f1.containsKey(token) && f2.containsKey(token))) {
+                difference += 1;
+                continue;
+            }
+            Map<T, Double> sf1 = f1.get(token);
+            Map<T, Double> sf2 = f2.get(token);
+            Set<T> subTokens = Stream.concat(sf1.keySet().stream(), sf2.keySet().stream()).collect(Collectors.toSet());
+            difference += subTokens.stream().
+                    mapToDouble(k -> sf1.getOrDefault(k, 0.0) + sf2.getOrDefault(k, 0.0))
+                    .sum();
+        }
+        difference = difference / tokens.size();
+        return 1 - difference;
     }
 }

@@ -17,4 +17,13 @@ public class CompoundAnalysis implements Analysis{
         return (List<T>) analyses.stream().
                 filter(analysis -> analysis.getClass().equals(c)).collect(Collectors.toList());
     }
+
+    /**
+     * @param other the string to compare against
+     * @return the average similarity of the included analyses
+     */
+    @Override
+    public double similarity(String other) {
+        return analyses.stream().mapToDouble(a->a.similarity(other)).sum() / analyses.size();
+    }
 }

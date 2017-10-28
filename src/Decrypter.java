@@ -39,7 +39,8 @@ public interface Decrypter {
 
     /**
      * @param s The string to decrypt
+     * @param analysis The analysis to analyse the decryption with
      * @return A Decryption containing the decrypted string
      */
-    Decryption decrypt(String s);
+    Decryption decrypt(String s, Analysis analysis);
 }

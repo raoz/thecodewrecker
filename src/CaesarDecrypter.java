@@ -20,7 +20,7 @@ public class CaesarDecrypter implements KeyedDecrypter {
         //Try all possible keys
         Decryption[] decryptions = new Decryption[26];
         for (int i = 0; i < 26; ++i) {
-            decryptions[i] = new CaesarDecrypter(i).decrypt(s);
+            decryptions[i] = new CaesarDecrypter(i).decrypt(s, analysis);
         }
         return Arrays.stream(decryptions).sorted(comparing(Decryption::getConfidence).reversed()).//Sort by confidence descending
                 limit(n).collect(Collectors.toList()); //Take n first from the sorted stream
@@ -31,11 +31,11 @@ public class CaesarDecrypter implements KeyedDecrypter {
      * @return The decryption
      */
     @Override
-    public Decryption decrypt(String s) {
+    public Decryption decrypt(String s, Analysis analysis) {
         //Decryption is the same as encryption with reverse key
         CaesarEncrypter ce = new CaesarEncrypter(-this.key);
         System.out.println(ce.encrypt(s));
-        return new Decryption(ce.encrypt(s), this);
+        return new Decryption(ce.encrypt(s), this, analysis.similarity(s));
     }
 
 }

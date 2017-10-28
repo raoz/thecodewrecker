@@ -27,4 +27,9 @@ public class FrequencyAnalysis<T> implements Analysis{
         String in = Util.readWholeStream(System.in);
         System.out.println(frequencyMap(in, NaturalLanguage::characters, true));
     }
+
+    @Override
+    public double similarity(String other) {
+        return 0;
+    }
 }

@@ -31,8 +31,8 @@ public class SubstitutionDecrypter implements KeyedDecrypter {
     }
 
     @Override
-    public Decryption decrypt(String s) {
+    public Decryption decrypt(String s, Analysis analysis) {
         SubstitutionEncrypter reverseEncrypter = new SubstitutionEncrypter(reverseKey);
-        return new Decryption(reverseEncrypter.encrypt(s), this);
+        return new Decryption(reverseEncrypter.encrypt(s), this, analysis.similarity(s));
     }
 }
