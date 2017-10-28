@@ -1,6 +1,7 @@
 /**
  * Exception thrown when a method or class is not provided with sufficient data to work.
  */
+@SuppressWarnings("unused")
 public class InsufficientDataException extends RuntimeException {
     //Default Throwable constructors
 
