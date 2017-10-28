@@ -9,4 +9,9 @@ public class ConstantAnalysis implements Analysis {
     public double similarity(String other) {
         return c;
     }
+
+    @Override
+    public void fromString(String lines) {
+        c = Double.parseDouble(lines.trim());
+    }
 }

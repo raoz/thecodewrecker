@@ -47,6 +47,10 @@ public class MarkovAnalysis<T> implements Analysis{
         return freqTable;
     }
 
+    public MarkovAnalysis(Function<String, List<T>> tokenizer) {
+        this.tokenizer = tokenizer;
+    }
+
     /**
      * @param s String to analyse
      */
@@ -58,10 +62,10 @@ public class MarkovAnalysis<T> implements Analysis{
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        for (Map.Entry<T, Map<T, Double>> markovPresent : getData().entrySet()) {
-            b.append(markovPresent.getKey());
+        for (Map.Entry<T, Map<T, Long>> mSub : markovOccTable.entrySet()) {
+            b.append(mSub.getKey());
             b.append('\n');
-            markovPresent.getValue().forEach((key, value) -> {
+            mSub.getValue().forEach((key, value) -> {
                 b.append('\t');
                 b.append(key);
                 b.append('\t');
@@ -70,6 +74,33 @@ public class MarkovAnalysis<T> implements Analysis{
             });
         }
         return b.toString();
+    }
+
+    /**
+     * Reads a string in the same format as toString outputs to this
+     * @param s String to read from
+     */
+    @Override
+    public void fromString(String s) {
+        Function<String, T> read = tokenizer.andThen(a -> a.stream().findFirst().get()); //Get the first token
+        Scanner scan = new Scanner(s);
+        T token = null;
+        Map<T, Long> sOccTable = null;
+        Map<T, Map<T,Long>> occtable = new HashMap<>();
+        while(scan.hasNextLine()) {
+            String l = scan.nextLine();
+            if(l.charAt(0) != '\t') {
+                if(sOccTable != null) {
+                    occtable.put(token, sOccTable);
+                }
+                token = read.apply(l.trim());
+                sOccTable = new HashMap<>();
+            } else {
+                String[] split = l.split(" \n");
+                sOccTable.put(read.apply(split[0]),Long.parseLong(split[1]));
+            }
+        }
+        occtable.put(token, sOccTable);
     }
 
     public static void main(String[] args) throws IOException {
@@ -86,6 +117,7 @@ public class MarkovAnalysis<T> implements Analysis{
     public double similarity(String other) {
         return this.similarity(new MarkovAnalysis<>(other, tokenizer));
     }
+
 
     public double similarity(MarkovAnalysis<T> other) {
         Map<T, Map<T, Double>> f1 = this.getData();

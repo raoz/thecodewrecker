@@ -26,4 +26,9 @@ public class CompoundAnalysis implements Analysis{
     public double similarity(String other) {
         return analyses.stream().mapToDouble(a->a.similarity(other)).sum() / analyses.size();
     }
+
+    @Override
+    public void fromString(String lines) {
+        //TODO
+    }
 }

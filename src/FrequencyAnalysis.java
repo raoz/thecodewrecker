@@ -32,4 +32,9 @@ public class FrequencyAnalysis<T> implements Analysis{
     public double similarity(String other) {
         return 0;
     }
+
+    @Override
+    public void fromString(String lines) {
+        return;
+    }
 }
