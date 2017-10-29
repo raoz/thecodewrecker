@@ -6,8 +6,11 @@ import java.util.Scanner;
 import java.util.function.Function;
 
 public class FrequencyAnalysis<T> implements Analysis{
-    static <T> Map<T, Double> frequencyMap(String s, Function<String, List<T>> tokenizer, boolean ignoreCase) {
-        Map<T, Double> map = new HashMap<>();
+    Map<T, Double> map = new HashMap<>();
+    Function<String, List<T>> tokenizer;
+
+    FrequencyAnalysis(String s, Function<String, List<T>> tokenizer, boolean ignoreCase) {
+        this.tokenizer = tokenizer;
         if (ignoreCase) {
             s = s.toUpperCase();
         }
@@ -22,18 +25,21 @@ public class FrequencyAnalysis<T> implements Analysis{
         for (Map.Entry<T, Double> entry : map.entrySet()) {
             map.put(entry.getKey(), entry.getValue() / s.length());
         }
-        return map;
     }
-    static Map<Character, Double> readMapFromFile(File fail) throws Exception{
-        Scanner sc = new Scanner(fail, "UTF-8");
-        Map<Character, Double> map = new HashMap<>();
+
+    public FrequencyAnalysis(Function<String, List<T>> tokenizer) {
+        this.tokenizer = tokenizer;
+    }
+
+    @Override
+   public void fromString(String s) {
+        Function<String, T> read = tokenizer.andThen(a -> a.stream().findFirst().orElse(null)); //Get the first token
+        Scanner sc = new Scanner(s);
         while (sc.hasNextLine()) {
             String rida = sc.nextLine();
             String[] tükid = rida.split("   ");
-            map.put(tükid[0].charAt(0), Double.parseDouble(tükid[1]));
-
+            map.put(read.apply(tükid[0]), Double.parseDouble(tükid[1]));
         }
-        return map;
     }
 
     public static void main(String[] args) throws Exception{
@@ -41,9 +47,11 @@ public class FrequencyAnalysis<T> implements Analysis{
         //System.out.println(frequencyMap(in, true));
         //Map<Character, Double> thisMap = frequencyMap(in, true);
         File fr = new File("frequency.txt");
-        System.out.println(readMapFromFile(fr));
+        FrequencyAnalysis<Character> characterFrequencyAnalysis = new FrequencyAnalysis<Character>(NaturalLanguage::characters);
+        characterFrequencyAnalysis.fromString(Util.readWholeStream(new FileInputStream(fr)));
+        System.out.println(characterFrequencyAnalysis);
         String in = Util.readWholeStream(System.in);
-        System.out.println(frequencyMap(in, NaturalLanguage::characters, true));
+        System.out.println(new FrequencyAnalysis<>(in, NaturalLanguage::characters, true));
     }
 
     @Override
@@ -51,7 +59,4 @@ public class FrequencyAnalysis<T> implements Analysis{
         return 0;
     }
 
-    @Override
-    public void fromString(String lines) {
-    }
 }
