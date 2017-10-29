@@ -1,6 +1,9 @@
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Average of multiple analyses
+ */
 public class CompoundAnalysis implements Analysis{
     private List<Analysis> analyses;
 

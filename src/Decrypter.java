@@ -8,7 +8,7 @@ import static java.util.Comparator.comparing;
  */
 public interface Decrypter {
     /**
-     * A list of different decrypter classes
+     * A static list of different decrypter functions
      */
     List<Util.TriFunction<String, Integer, Analysis, List<Decryption>>> decrypters = new ArrayList<>();
     static void registerDecrypterFinder(Util.TriFunction<String, Integer, Analysis, List<Decryption>> d) {
@@ -26,11 +26,7 @@ public interface Decrypter {
     static Decryption[] findBest(String s, int n, Analysis analysis) {
         List<Decryption> decryptions = new ArrayList<>();
         for (Util.TriFunction<String, Integer, Analysis, List<Decryption>> fBest : decrypters) { //For every decrypter
-            try {
                 decryptions.addAll(fBest.apply( s, n, analysis));
-            } catch (InsufficientDataException e) {
-                System.out.println("Insufficient data for " + fBest.getClass().getSimpleName() + ": " + e.getMessage());
-            }
         }
         return decryptions.stream().
                 sorted(comparing(Decryption::getConfidence).reversed()). //Sort descendingly by confidence
