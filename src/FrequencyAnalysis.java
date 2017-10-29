@@ -1,5 +1,7 @@
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class FrequencyAnalysis implements Analysis{
     static Map<Character, Double> frequencyMap(String s, boolean ignoreCase){
@@ -20,8 +22,23 @@ public class FrequencyAnalysis implements Analysis{
         }
         return map;
     }
-    public static void main(String[] args){
-        String in = Util.readWholeStream(System.in);
-        System.out.println(frequencyMap(in, true));
+    static Map<Character, Double> readMapFromFile(File fail) throws Exception{
+        Scanner sc = new Scanner(fail, "UTF-8");
+        Map<Character, Double> map = new HashMap<>();
+        while (sc.hasNextLine()) {
+            String rida = sc.nextLine();
+            String[] tükid = rida.split("   ");
+            map.put(tükid[0].charAt(0), Double.parseDouble(tükid[1]));
+
+        }
+        return map;
+    }
+
+    public static void main(String[] args) throws Exception{
+        //String in = Util.readWholeStream(System.in);
+        //System.out.println(frequencyMap(in, true));
+        //Map<Character, Double> thisMap = frequencyMap(in, true);
+        File fr = new File("frequency.txt");
+        System.out.println(readMapFromFile(fr));
     }
 }
