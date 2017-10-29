@@ -37,7 +37,7 @@ public class FrequencyAnalysis<T> implements Analysis{
         Scanner sc = new Scanner(s);
         while (sc.hasNextLine()) {
             String line = sc.nextLine();
-            String[] pieces = line.split("   ");
+            String[] pieces = line.split("\t");
             map.put(read.apply(pieces[0]), Double.parseDouble(pieces[1]));
         }
     }
