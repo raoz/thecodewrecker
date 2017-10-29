@@ -133,8 +133,9 @@ public class MarkovAnalysis<T> implements Analysis{
             Map<T, Double> sf2 = f2.get(token);
             Set<T> subTokens = Stream.concat(sf1.keySet().stream(), sf2.keySet().stream()).collect(Collectors.toSet());
             difference += subTokens.stream().
-                    mapToDouble(k -> sf1.getOrDefault(k, 0.0) + sf2.getOrDefault(k, 0.0))
-                    .sum();
+                    mapToDouble(k ->
+                            Math.abs(sf1.getOrDefault(k, 0.0) - sf2.getOrDefault(k, 0.0))
+                    ).sum() / subTokens.size();
         }
         difference = difference / tokens.size();
         return 1 - difference;
