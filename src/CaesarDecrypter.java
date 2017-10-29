@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.util.Comparator.comparing;
 
 public class CaesarDecrypter implements KeyedDecrypter {
     private int key;
@@ -15,14 +16,14 @@ public class CaesarDecrypter implements KeyedDecrypter {
      * @param n How many decryptions to return
      * @return The n best Caesar decryptions of s
      */
-    @SuppressWarnings("unused") //This method is called via reflection
     public static List<Decryption> findBest(String s, int n, Analysis analysis) {
         //Try all possible keys
         Decryption[] decryptions = new Decryption[26];
         for (int i = 0; i < 26; ++i) {
-            decryptions[i] = new CaesarDecrypter(i).decrypt(s);
+            decryptions[i] = new CaesarDecrypter(i).decrypt(s, analysis);
         }
-        return Arrays.stream(decryptions).sorted().limit(n).collect(Collectors.toList()); //Take n first from the sorted arr
+        return Arrays.stream(decryptions).sorted(comparing(Decryption::getConfidence).reversed()).//Sort by confidence descending
+                limit(n).collect(Collectors.toList()); //Take n first from the sorted stream
     }
 
     /**
@@ -30,11 +31,11 @@ public class CaesarDecrypter implements KeyedDecrypter {
      * @return The decryption
      */
     @Override
-    public Decryption decrypt(String s) {
+    public Decryption decrypt(String s, Analysis analysis) {
         //Decryption is the same as encryption with reverse key
         CaesarEncrypter ce = new CaesarEncrypter(-this.key);
         System.out.println(ce.encrypt(s));
-        return new Decryption(ce.encrypt(s), this);
+        return new Decryption(ce.encrypt(s), this, analysis.similarity(s));
     }
 
 }

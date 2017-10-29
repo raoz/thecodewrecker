@@ -10,10 +10,10 @@ public class Decryption implements Comparable<Decryption> {
      * @param plaintext The result of decryption
      * @param creator   The Decrypter used to decrypt
      */
-    public Decryption(String plaintext, Decrypter creator) {
+    public Decryption(String plaintext, Decrypter creator, double confidence) {
         this.plaintext = plaintext;
         this.creator = creator;
-        this.confidence = 0; //TODO: Implement confidence calculation
+        this.confidence = confidence;
 
     }
 
