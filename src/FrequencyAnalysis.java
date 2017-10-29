@@ -44,7 +44,7 @@ public class FrequencyAnalysis<T> implements Analysis{
         //System.out.println(frequencyMap(in, true));
         //Map<Character, Double> thisMap = frequencyMap(in, true);
         File fr = new File("frequency.txt");
-        FrequencyAnalysis<Character> characterFrequencyAnalysis = new FrequencyAnalysis<Character>(NaturalLanguage::characters);
+        FrequencyAnalysis<Character> characterFrequencyAnalysis = new FrequencyAnalysis<>(NaturalLanguage::characters);
         characterFrequencyAnalysis.fromString(Util.readWholeStream(new FileInputStream(fr)));
         System.out.println(characterFrequencyAnalysis);
         String in = Util.readWholeStream(System.in);
