@@ -36,9 +36,9 @@ public class FrequencyAnalysis<T> implements Analysis{
         Function<String, T> read = tokenizer.andThen(a -> a.stream().findFirst().orElse(null)); //Get the first token
         Scanner sc = new Scanner(s);
         while (sc.hasNextLine()) {
-            String rida = sc.nextLine();
-            String[] tükid = rida.split("   ");
-            map.put(read.apply(tükid[0]), Double.parseDouble(tükid[1]));
+            String line = sc.nextLine();
+            String[] pieces = line.split("   ");
+            map.put(read.apply(pieces[0]), Double.parseDouble(pieces[1]));
         }
     }
 
