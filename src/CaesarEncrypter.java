@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class CaesarEncrypter implements KeyedEncrypter {
@@ -6,6 +7,11 @@ public class CaesarEncrypter implements KeyedEncrypter {
     public CaesarEncrypter(int key) {
         super();
         this.key = key;
+    }
+
+    public CaesarEncrypter(){
+        Random r = new Random();
+        this.key = r.nextInt(26);
     }
 
     public static void main(String[] args) {
