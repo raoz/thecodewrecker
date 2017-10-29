@@ -14,7 +14,7 @@ public class Util {
      */
     public static String readWholeStream(InputStream s) {
         BufferedReader br = new BufferedReader(new InputStreamReader(s)); //Create a reader for the input
-        return br.lines().collect(Collectors.joining("")); // Read all lines and join them using ""
+        return br.lines().collect(Collectors.joining("\n")); // Read all lines and join them using ""
     }
     @FunctionalInterface
     interface TriFunction<T,U,V,R> {
