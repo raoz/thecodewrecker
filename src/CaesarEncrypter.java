@@ -22,8 +22,9 @@ public class CaesarEncrypter implements KeyedEncrypter {
         System.out.println("Please enter the key: ");
         int shifter = scan.nextInt();
         CaesarEncrypter encrypter1 = new CaesarEncrypter(shifter);
-        System.out.println("Read text from file[file] or from input[input] ");
+        System.out.println("Read text from file[file] or from input[input]? ");
         String answer = scan.nextLine().toLowerCase();
+
         if (answer.equals("file")){
             System.out.println("Enter file name: ");
             String fl = scan.nextLine();
