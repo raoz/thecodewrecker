@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Random;
 import java.util.Scanner;
 
 public class CaesarEncrypter implements KeyedEncrypter {
@@ -8,15 +11,30 @@ public class CaesarEncrypter implements KeyedEncrypter {
         this.key = key;
     }
 
-    public static void main(String[] args) {
+    public CaesarEncrypter(){
+        Random r = new Random();
+        this.key = r.nextInt(26);
+    }
+
+    public static void main(String[] args) throws Exception{
+        String message;
         Scanner scan = new Scanner(System.in);
-        System.out.println("Please enter the shifter: ");
+        System.out.println("Please enter the key: ");
         int shifter = scan.nextInt();
-        scan.nextLine();
         CaesarEncrypter encrypter1 = new CaesarEncrypter(shifter);
-        System.out.println(encrypter1.encrypt("Zz-Yy? Ahv!!!!!"));
-        System.out.println("Please enter a message to encrypt: ");
-        String message = scan.nextLine();
+        System.out.println("Read text from file[file] or from input[input] ");
+        String answer = scan.nextLine().toLowerCase();
+        if (answer.equals("file")){
+            System.out.println("Enter file name: ");
+            String fl = scan.nextLine();
+            File file = new File(fl);
+            message = Util.readWholeStream(new FileInputStream(file));
+        }
+        else {
+            //System.out.println(encrypter1.encrypt("Zz-Yy? Ahv!!!!!"));
+            System.out.println("Please enter a message to encrypt(ctrl+D to end): ");
+            message = Util.readWholeStream(System.in);
+        }
         System.out.println(encrypter1.encrypt(message));
     }
 
