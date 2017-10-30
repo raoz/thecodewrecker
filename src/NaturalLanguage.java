@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
  * Class for natural language tools
  */
 class NaturalLanguage {
+    //TODO: Convert to forwards pattern (reverse pattern is more intuitive, but less efficient
     private static final Pattern reverseSyllablePattern = Pattern.compile(
             "[bcdfghjklmnpqrstvwxz]*[aeiouy]+[bcdfghjklmnpqrstvwxz]?([bcdfghjklmnpqrstvwxz]*\b)?");
     /**
