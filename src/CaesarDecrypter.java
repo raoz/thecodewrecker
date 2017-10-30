@@ -33,9 +33,15 @@ public class CaesarDecrypter implements KeyedDecrypter {
     @Override
     public Decryption decrypt(String s, Analysis analysis) {
         //Decryption is the same as encryption with reverse key
-        CaesarEncrypter ce = new CaesarEncrypter(-this.key);
-        System.out.println(ce.encrypt(s));
-        return new Decryption(ce.encrypt(s), this, analysis.similarity(s));
+        CaesarEncrypter ce = new CaesarEncrypter(26-this.key);
+        String plaintext = ce.encrypt(s);
+        return new Decryption(plaintext, this, analysis.similarity(plaintext));
     }
 
+    @Override
+    public String toString() {
+        return "CaesarDecrypter{" +
+                "key=" + key +
+                '}';
+    }
 }

@@ -1,3 +1,5 @@
+Frequency
+Character
 a   8.167
 b   1.492
 c   2.782

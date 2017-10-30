@@ -39,6 +39,9 @@ public class MarkovAnalysis<T> implements Analysis{
         for (Map.Entry<T, Map<T, Long>> occEntry : markovOccTable.entrySet()) {
             Map<T, Double> freqSubTable = new HashMap<>();
             Double sum = occEntry.getValue().values().stream().mapToDouble(d->d).sum();
+            if(sum < freqTable.keySet().size() / 10) { //Ad hoc normalisation
+                continue;
+            }
             occEntry.getValue().forEach((key, val) -> freqSubTable.put(key, val/sum));
             freqTable.put(occEntry.getKey(), freqSubTable);
         }
@@ -59,6 +62,8 @@ public class MarkovAnalysis<T> implements Analysis{
 
     @Override
     public String toString() {
+        System.out.println("MarkovAnalysis");
+        System.out.println(lastToken.getClass().getSimpleName());
         StringBuilder b = new StringBuilder();
         for (Map.Entry<T, Map<T, Long>> mSub : markovOccTable.entrySet()) {
             b.append(mSub.getKey());

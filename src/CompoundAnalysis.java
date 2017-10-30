@@ -10,6 +10,10 @@ public class CompoundAnalysis implements Analysis{
         this.analyses = analyses;
     }
 
+    public void addAnalysis(Analysis a) {
+        analyses.add(a);
+    }
+
 
     /**
      * @param other the string to compare against

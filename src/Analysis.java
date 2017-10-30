@@ -8,6 +8,25 @@ public interface Analysis {
     void fromString(String lines);
     void addData(String data);
 
+    static Analysis getFromString(String s) {
+        Scanner sc = new Scanner(s);
+        Analysis a;
+        if(sc.nextLine().trim().equals("MarkovAnalysis")) {
+            if(sc.nextLine().trim().equals("Character")) {
+                a = new MarkovAnalysis<>(NaturalLanguage::characters);
+            } else{
+                a = new MarkovAnalysis<>(NaturalLanguage::naiveSyllables);
+            }
+        } else {
+            if(sc.nextLine().trim().equals("Character")) {
+                a = new MarkovAnalysis<>(NaturalLanguage::characters);
+            } else {
+                a = new MarkovAnalysis<>(NaturalLanguage::naiveSyllables);
+            }
+        }
+        a.fromString(s.replaceFirst(".*\n.*\n", ""));
+        return a;
+    }
     /**
      * Interactive Analysis generation
      */

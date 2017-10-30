@@ -33,7 +33,7 @@ public class CaesarEncrypter implements KeyedEncrypter {
         if(in == System.in) {
             System.out.println("Enter the message(Ctrl+D to end):");
         }
-        message = Util.readWholeStream(System.in);
+        message = Util.readWholeStream(in);
         out.println(encrypter1.encrypt(message));
     }
 
