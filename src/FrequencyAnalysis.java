@@ -90,8 +90,8 @@ public class FrequencyAnalysis<T> implements Analysis{
     }
 
     /**
-     * @param other String to comparatively analyse
-     * @return The likelihood of the other string being of the same type as analysed
+     * @param other string to comparatively analyse
+     * @return the likelihood of the other string being of the same type as analysed
      */
     @Override
     public double similarity(String other) {
@@ -100,7 +100,7 @@ public class FrequencyAnalysis<T> implements Analysis{
 
     /**
      * @param other Frequency analysis to compare to
-     * @return 1-average difference of the frequency maps
+     * @return 1 — average difference of the frequency maps
      */
     double similarity(FrequencyAnalysis<T> other){
         Map<T, Double> f1 = this.getMap();

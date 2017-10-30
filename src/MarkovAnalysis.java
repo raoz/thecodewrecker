@@ -4,8 +4,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MarkovAnalysis<T> implements Analysis{
+    /**
+     * Function to turn a string to a list of tokens
+     */
     private final Function<String, List<T>> tokenizer;
+    /**
+     * Occurrence super-table: for each token, list of next tokens and their numbers of occurrences
+     */
     private final Map<T, Map<T, Long>> markovOccTable = new HashMap<>();
+    /**
+     * Cached frequency super-table: for each token, list of next tokens and their frequency of occurrence
+     */
+    private Map<T, Map<T, Double>> markovFreqTable = null;
     private T lastToken = null;
 
     /**
@@ -14,6 +24,7 @@ public class MarkovAnalysis<T> implements Analysis{
      */
     @Override
     public void addData(String s) {
+        markovFreqTable = null; //Clear the cache
         List<T> tokens = tokenizer.apply(s);
         if(lastToken != null) {
             tokens.add(0, lastToken);
@@ -35,17 +46,20 @@ public class MarkovAnalysis<T> implements Analysis{
      * @return The Markov frequency table
      */
     private Map<T, Map<T, Double>> getData() {
-        Map<T, Map<T, Double>> freqTable = new HashMap<>();
+        markovFreqTable = new HashMap<>();
         for (Map.Entry<T, Map<T, Long>> occEntry : markovOccTable.entrySet()) {
             Map<T, Double> freqSubTable = new HashMap<>();
+            //Calculate the total number of occurrences of this token
             Double sum = occEntry.getValue().values().stream().mapToDouble(d->d).sum();
-            if(sum < freqTable.keySet().size() / 10) { //Ad hoc normalisation
+
+            if(sum < markovFreqTable.keySet().size() / 10) { //Ad hoc normalisation
                 continue;
             }
+
             occEntry.getValue().forEach((key, val) -> freqSubTable.put(key, val/sum));
-            freqTable.put(occEntry.getKey(), freqSubTable);
+            markovFreqTable.put(occEntry.getKey(), freqSubTable);
         }
-        return freqTable;
+        return markovFreqTable;
     }
 
     /**
@@ -110,12 +124,20 @@ public class MarkovAnalysis<T> implements Analysis{
         markovOccTable.put(token, sOccTable);
     }
 
+    /**
+     * @param other Frequency analysis to compare to
+     * @return 1-average difference of the frequency maps
+     */
     @Override
     public double similarity(String other) {
         return this.similarity(new MarkovAnalysis<>(other, tokenizer));
     }
 
 
+    /**
+     * @param other Frequency analysis to compare to
+     * @return 1 — average difference of the frequency maps
+     */
     double similarity(MarkovAnalysis<T> other) {
         Map<T, Map<T, Double>> f1 = this.getData();
         Map<T, Map<T, Double>> f2 = other.getData();
