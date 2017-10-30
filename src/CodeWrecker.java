@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
 import java.util.Scanner;
 
 public class CodeWrecker {

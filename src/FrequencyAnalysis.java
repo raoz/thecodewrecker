@@ -48,11 +48,11 @@ public class FrequencyAnalysis<T> implements Analysis{
         freqMap = null; //Reset the frequency map
         data = data.toUpperCase();
         List<T> tokens = tokenizer.apply(data);
-        for (int i = 0; i < tokens.size(); i++) {
-            if (occMap.containsKey(tokens.get(i))) {
-                occMap.put(tokens.get(i), occMap.get(tokens.get(i)) + 1);
+        for (T token : tokens) {
+            if (occMap.containsKey(token)) {
+                occMap.put(token, occMap.get(token) + 1);
             } else {
-                occMap.put(tokens.get(i), 1L);
+                occMap.put(token, 1L);
             }
         }
     }
