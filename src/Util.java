@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 public class Util {
     /**
      * Reads the whole stream
-     *
      * @param s InputStream to read
      * @return Contents as a String
      */
@@ -15,9 +14,27 @@ public class Util {
         BufferedReader br = new BufferedReader(new InputStreamReader(s)); //Create a reader for the input
         return br.lines().collect(Collectors.joining("\n")); // Read all lines and join them using ""
     }
+
+    /**
+     * A function that takes three arguments and returns something
+     * @param <T> First argument type of the function
+     * @param <U> Second argument type of the function
+     * @param <V> Third argument type of the function
+     * @param <R> Return type of the function
+     */
     @FunctionalInterface
     interface TriFunction<T,U,V,R> {
+        /**
+         * Applies the function to given arguments
+         */
         R apply(T t, U u, V v);
+
+        /**
+         * Composes the function with another of one parameter R and return value X
+         * @param after function to compose with
+         * @param <X> return type of after
+         * @return Function composition of this and after
+         */
         @SuppressWarnings("unused") //For a nice interface for future use
         default <X> TriFunction<T,U,V,X> andThen(Function<? super R, ? extends X> after) {
             Objects.requireNonNull(after);
@@ -26,6 +43,7 @@ public class Util {
     }
 
     /**
+     * Asks an user a question and presents them with numbered options
      * @param scan Scanner to use for retrieving the response
      * @param query The question to ask
      * @param options The options to present
@@ -53,6 +71,13 @@ public class Util {
         return result;
     }
 
+    /**
+     * Lets user choose an input or output stream
+     * @param scan Scanner to use
+     * @param std Default input
+     * @param <T> Stream type
+     * @return The stream chosen by user
+     */
     @SuppressWarnings("unchecked")
     private static <T> T getStream(Scanner scan, T std) {
         while(true) { //Until we get a stream, at which point we return
@@ -74,10 +99,21 @@ public class Util {
             }
         }
     }
+
+    /**
+     * Lets user choose an input stream
+     * @param scan Scanner to use
+     * @return chosen input stream
+     */
     public static InputStream getInputStream(Scanner scan) {
         System.out.println("Read from a file[{filename}] or from standard input[]? ");
         return getStream(scan, System.in);
     }
+    /**
+     * Lets user choose an output stream
+     * @param scan Scanner to use
+     * @return chosen output stream
+     */
     public static OutputStream getOutputStream(Scanner scan) {
         System.out.println("Write to a file[{filename}] or to standard output[]? ");
         return getStream(scan, System.out);
