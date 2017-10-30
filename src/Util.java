@@ -53,8 +53,9 @@ public class Util {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> T getStream(String name, T std) {
+    private static <T> T getStream(Scanner scan, T std) {
         while(true) { //Until we get a stream, at which point we return
+            String name = scan.nextLine().trim();
             if (name.equals("")) {
                 return std;
             } else {
@@ -74,13 +75,11 @@ public class Util {
     }
     public static InputStream getInputStream(Scanner scan) {
         System.out.println("Read from a file[{filename}] or from standard input[]? ");
-        String answer = scan.nextLine().trim();
-        return getStream(answer, System.in);
+        return getStream(scan, System.in);
     }
     public static OutputStream getOutputStream(Scanner scan) {
         System.out.println("Write to a file[{filename}] or to standard output[]? ");
-        String answer = scan.nextLine().trim();
-        return getStream(answer, System.out);
+        return getStream(scan, System.out);
     }
 
     /**
