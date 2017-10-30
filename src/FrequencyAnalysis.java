@@ -48,9 +48,7 @@ public class FrequencyAnalysis<T> implements Analysis{
     }
 
     public static void main(String[] args) throws Exception{
-        //String in = Util.readWholeStream(System.in);
-        //System.out.println(frequencyMap(in, true));
-        //Map<Character, Double> thisMap = frequencyMap(in, true);
+        //TODO: eliminate code duplication
         Scanner sc = new Scanner(System.in);
         System.out.println("Should the tokens be");
         System.out.println("1. Characters");
@@ -70,7 +68,6 @@ public class FrequencyAnalysis<T> implements Analysis{
         }
         System.out.println("Read from a file[{filename}] or from standard input[stdin]? ");
         String answer = sc.nextLine().trim();
-        FrequencyAnalysis<Character> characterFrequencyAnalysis = new FrequencyAnalysis<>(NaturalLanguage::characters);
         InputStream in;
         if (answer.toLowerCase().equals("stdin")){
             in = System.in;
