@@ -4,6 +4,9 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 
 public class CaesarDecrypter implements KeyedDecrypter {
+    /**
+     * Number of places the plaintext is shifted by
+     */
     private final int key;
 
     private CaesarDecrypter(Integer key) {
