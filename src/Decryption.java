@@ -8,7 +8,8 @@ public class Decryption implements Comparable<Decryption> {
 
     /**
      * @param plaintext The result of decryption
-     * @param creator   The Decrypter used to decrypt
+     * @param creator The Decrypter used to decrypt
+     * @param confidence Likelihood of this being the correct decryption according to analysis
      */
     public Decryption(String plaintext, Decrypter creator, double confidence) {
         this.plaintext = plaintext;
