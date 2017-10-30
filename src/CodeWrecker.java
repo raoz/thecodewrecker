@@ -1,5 +1,8 @@
 public class CodeWrecker {
     public static void main(String[] args) {
+        main();
+    }
+    public static void main() {
         Decrypter.registerDecrypterFinder(CaesarDecrypter::findBest);
         String in = Util.readWholeStream(System.in);
         System.out.println(in);

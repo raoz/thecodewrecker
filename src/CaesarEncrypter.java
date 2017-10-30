@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,22 +15,26 @@ public class CaesarEncrypter implements KeyedEncrypter {
         this.key = r.nextInt(26);
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) {
+        main();
+    }
+
+    /**
+     * Interactive use of this class
+     */
+    public static void main(){
         String message;
         Scanner scan = new Scanner(System.in);
         System.out.println("Please enter the key: ");
-        int shifter = scan.nextInt();
-        CaesarEncrypter encrypter1 = new CaesarEncrypter(shifter);
-        System.out.println("Read text from file[{filename}] or from input[stdin]? ");
-        String answer = scan.nextLine().toLowerCase();
-        if (answer.equals("stdin")){
-            System.out.println("Please enter a message to encrypt(ctrl+D to end): ");
-            message = Util.readWholeStream(System.in);
+        int key = scan.nextInt();
+        CaesarEncrypter encrypter1 = new CaesarEncrypter(key);
+        InputStream in = Util.getInputStream(scan);
+        PrintStream out = new PrintStream(Util.getOutputStream(scan));
+        if(in == System.in) {
+            System.out.println("Enter the message(Ctrl+D to end):");
         }
-        else {
-            message = Util.readWholeStream(new FileInputStream(answer));
-        }
-        System.out.println(encrypter1.encrypt(message));
+        message = Util.readWholeStream(System.in);
+        out.println(encrypter1.encrypt(message));
     }
 
     @Override

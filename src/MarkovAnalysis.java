@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -100,50 +99,6 @@ public class MarkovAnalysis<T> implements Analysis{
             }
         }
         markovOccTable.put(token, sOccTable);
-    }
-
-    public static void main(String[] args) throws IOException {
-        //TODO: eliminate code duplication
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Should the tokens be");
-        System.out.println("1. Characters");
-        System.out.println("2. Syllables");
-        MarkovAnalysis f;
-        int choice = sc.nextInt();
-        switch (choice) {
-            case 1:
-                f = new MarkovAnalysis<Character>(NaturalLanguage::characters);
-            case 2:
-                f = new MarkovAnalysis<String>(NaturalLanguage::naiveSyllables);
-                break;
-            default:
-                System.out.println("Please enter a number in range [1..2]");
-                main(args);
-                return;
-        }
-        System.out.println("Read from a file[{filename}] or from standard input[stdin]? ");
-        String answer = sc.nextLine().trim();
-        InputStream in;
-        if (answer.toLowerCase().equals("stdin")){
-            in = System.in;
-        } else  {
-            in = new FileInputStream(answer);
-        }
-        System.out.println("Output to a file[{filename}] or to standard output[stdout]?");
-        answer = sc.nextLine().trim();
-        PrintStream out;
-        if (answer.toLowerCase().equals("stdin")){
-            out = System.out;
-        } else {
-            out = new PrintStream(answer);
-        }
-        //File fr = new File("frequency.txt");
-        if(in == System.in) {
-            System.out.println("Please enter the sourcetext(Ctrl+D to end):");
-        }
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        br.lines().forEach(f::addData);
-        out.println(br);
     }
 
     @Override
