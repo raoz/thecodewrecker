@@ -9,8 +9,14 @@ class CodeWrecker {
     public static void main(String[] args) {
         main();
     }
+
+    /**
+     * Interactively try to decipher
+     */
     public static void main() {
         Scanner scan = new Scanner(System.in);
+
+        //Build the analusis
         System.out.println("Enter a comma separated list of analysis files:");
         String[] filenames = scan.nextLine().trim().split(",");
         CompoundAnalysis analysis = new CompoundAnalysis(new ArrayList<>());
@@ -23,7 +29,10 @@ class CodeWrecker {
                 System.out.println("Ignoring.");
             }
         }
+        //Add the decrypters
         Decrypter.registerDecrypterFinder(CaesarDecrypter::findBest);
+        //TODO: Add more decrypters
+
         System.out.println("How many solutions to output? [1..26]");
         int n = -1;
         while(n == -1) {
@@ -37,6 +46,7 @@ class CodeWrecker {
                 System.out.println("Please enter a number between 1 and 26.");
             }
         }
+
         System.out.println("Text to encrypt");
         InputStream in = Util.getInputStream(scan);
         PrintStream out = new PrintStream(Util.getOutputStream(scan));
