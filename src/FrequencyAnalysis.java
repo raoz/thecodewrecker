@@ -4,8 +4,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FrequencyAnalysis<T> implements Analysis{
+    /**
+     * Frequency map: For each element, value in [0..1] of how often it occurs
+     */
     private Map<T, Double> freqMap = new HashMap<>();
+    /**
+     * Occurance map: For each element, number of times it has occured
+     */
     private Map<T, Long> occMap = new HashMap<>();
+    /**
+     * Function to get tokens from a string
+     */
     private final Function<String, List<T>> tokenizer;
 
     public FrequencyAnalysis(Function<String, List<T>> tokenizer) {
@@ -29,6 +38,9 @@ public class FrequencyAnalysis<T> implements Analysis{
         return b.toString();
     }
 
+    /**
+     * @param s String to read the table from
+     */
     @Override
    public void fromString(String s) {
         occMap = null;
@@ -41,6 +53,9 @@ public class FrequencyAnalysis<T> implements Analysis{
         }
     }
 
+    /**
+     * @param data Additional data to analyse
+     */
     @Override
     public void addData(String data) {
         if(occMap == null) {
@@ -58,11 +73,10 @@ public class FrequencyAnalysis<T> implements Analysis{
         }
     }
 
-    @Override
-    public double similarity(String other) {
-        return this.similarity(new FrequencyAnalysis<>(other, tokenizer));
-    }
 
+    /**
+     * @return The frequency table
+     */
     Map<T, Double> getMap() {
         if(freqMap != null) {
             return freqMap;
@@ -75,6 +89,19 @@ public class FrequencyAnalysis<T> implements Analysis{
         return freqMap;
     }
 
+    /**
+     * @param other String to comparatively analyse
+     * @return The likelihood of the other string being of the same type as analysed
+     */
+    @Override
+    public double similarity(String other) {
+        return this.similarity(new FrequencyAnalysis<>(other, tokenizer));
+    }
+
+    /**
+     * @param other Frequency analysis to compare to
+     * @return 1-average difference of the frequency maps
+     */
     double similarity(FrequencyAnalysis<T> other){
         Map<T, Double> f1 = this.getMap();
         Map<T, Double> f2 = other.getMap();
