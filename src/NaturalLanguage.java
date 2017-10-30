@@ -29,11 +29,13 @@ public class NaturalLanguage {
     }
 
     /**
-     * Convert a string to list of characters
+     * Convert a string to list of alphabetic characters
      * @param s String to convert
-     * @return List of characters in teh string
+     * @return List of characters in the string
      */
     static List<Character> characters(String s) {
-        return s.chars().mapToObj(c -> (char)c).collect(Collectors.toList());
+        return Normalizer.normalize(s, Normalizer.Form.NFD) //convert into normal form
+                .replaceAll("[^A-Za-z]", "")  //remove non-alphabetic
+                .chars().mapToObj(c -> (char)c).collect(Collectors.toList()); //Create a list of characters
     }
 }
