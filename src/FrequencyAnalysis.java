@@ -68,7 +68,7 @@ public class FrequencyAnalysis<T> implements Analysis{
                 main(args);
                 return;
         }
-        System.out.println("Read from a file[filename] or from standard input[stdin]? ");
+        System.out.println("Read from a file[{filename}] or from standard input[stdin]? ");
         String answer = sc.nextLine().trim();
         FrequencyAnalysis<Character> characterFrequencyAnalysis = new FrequencyAnalysis<>(NaturalLanguage::characters);
         InputStream in;
@@ -77,7 +77,7 @@ public class FrequencyAnalysis<T> implements Analysis{
         } else  {
             in = new FileInputStream(answer);
         }
-        System.out.println("Output to a file[filename] or standard output[stdout]?");
+        System.out.println("Output to a file[{filename}] or to standard output[stdout]?");
         answer = sc.nextLine().trim();
         PrintStream out;
         if (answer.toLowerCase().equals("stdin")){

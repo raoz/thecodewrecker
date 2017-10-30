@@ -22,19 +22,14 @@ public class CaesarEncrypter implements KeyedEncrypter {
         System.out.println("Please enter the key: ");
         int shifter = scan.nextInt();
         CaesarEncrypter encrypter1 = new CaesarEncrypter(shifter);
-        System.out.println("Read text from file[file] or from input[input]? ");
+        System.out.println("Read text from file[{filename}] or from input[stdin]? ");
         String answer = scan.nextLine().toLowerCase();
-
-        if (answer.equals("file")){
-            System.out.println("Enter file name: ");
-            String fl = scan.nextLine();
-            File file = new File(fl);
-            message = Util.readWholeStream(new FileInputStream(file));
-        }
-        else {
-            //System.out.println(encrypter1.encrypt("Zz-Yy? Ahv!!!!!"));
+        if (answer.equals("stdin")){
             System.out.println("Please enter a message to encrypt(ctrl+D to end): ");
             message = Util.readWholeStream(System.in);
+        }
+        else {
+            message = Util.readWholeStream(new FileInputStream(answer));
         }
         System.out.println(encrypter1.encrypt(message));
     }
