@@ -26,7 +26,7 @@ public class CaesarEncrypter implements KeyedEncrypter {
         String message;
         Scanner scan = new Scanner(System.in);
         System.out.println("Please enter the key: ");
-        int key = scan.nextInt();
+        int key = Integer.parseInt(scan.nextLine().trim());
         CaesarEncrypter encrypter1 = new CaesarEncrypter(key);
         InputStream in = Util.getInputStream(scan);
         PrintStream out = new PrintStream(Util.getOutputStream(scan));
