@@ -4,7 +4,7 @@ import java.util.List;
  * Average of multiple analyses
  */
 public class CompoundAnalysis implements Analysis{
-    private List<Analysis> analyses;
+    private final List<Analysis> analyses;
 
     public CompoundAnalysis(List<Analysis> analyses) {
         this.analyses = analyses;

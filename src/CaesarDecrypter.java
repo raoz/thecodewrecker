@@ -4,9 +4,9 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 
 public class CaesarDecrypter implements KeyedDecrypter {
-    private int key;
+    private final int key;
 
-    public CaesarDecrypter(Integer key) {
+    private CaesarDecrypter(Integer key) {
         super();
         this.key = key;
     }

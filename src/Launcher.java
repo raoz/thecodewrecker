@@ -4,7 +4,7 @@ import java.util.Scanner;
  * The main class for the JAR; chooses the class to execute
  * Also contains methods for working with arguments
  */
-public class Launcher {
+class Launcher {
     public static void main(String[] args) {
         System.out.println("CodeWrecker uses natural language analysis techniques for automatic cryptoanalysis.");
         Scanner scan = new Scanner(System.in, "UTF-8");

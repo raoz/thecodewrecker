@@ -18,6 +18,7 @@ public class Util {
     @FunctionalInterface
     interface TriFunction<T,U,V,R> {
         R apply(T t, U u, V v);
+        @SuppressWarnings("unused") //For a nice interface for future use
         default <X> TriFunction<T,U,V,X> andThen(Function<? super R, ? extends X> after) {
             Objects.requireNonNull(after);
             return (T t, U u, V v) -> after.apply(apply(t,u,v));

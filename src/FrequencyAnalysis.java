@@ -6,14 +6,15 @@ import java.util.stream.Stream;
 public class FrequencyAnalysis<T> implements Analysis{
     private Map<T, Double> freqMap = new HashMap<>();
     private Map<T, Long> occMap = new HashMap<>();
-    Function<String, List<T>> tokenizer;
-
-    FrequencyAnalysis(String s, Function<String, List<T>> tokenizer) {
-        this.tokenizer = tokenizer;
-    }
+    private final Function<String, List<T>> tokenizer;
 
     public FrequencyAnalysis(Function<String, List<T>> tokenizer) {
         this.tokenizer = tokenizer;
+    }
+
+    private FrequencyAnalysis(String s, Function<String, List<T>> tokenizer) {
+        this.tokenizer = tokenizer;
+        addData(s);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class FrequencyAnalysis<T> implements Analysis{
         return this.similarity(new FrequencyAnalysis<>(other, tokenizer));
     }
 
-    public Map<T, Double> getMap() {
+    Map<T, Double> getMap() {
         if(freqMap != null) {
             return freqMap;
         }
@@ -74,7 +75,7 @@ public class FrequencyAnalysis<T> implements Analysis{
         return freqMap;
     }
 
-    public double similarity(FrequencyAnalysis<T> other){
+    double similarity(FrequencyAnalysis<T> other){
         Map<T, Double> f1 = this.getMap();
         Map<T, Double> f2 = other.getMap();
         double difference = 0;

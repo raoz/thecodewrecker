@@ -3,14 +3,14 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class CaesarEncrypter implements KeyedEncrypter {
-    private int key;
+    private final int key;
 
     public CaesarEncrypter(int key) {
         super();
         this.key = key;
     }
 
-    public CaesarEncrypter(){
+    private CaesarEncrypter(){
         Random r = new Random();
         this.key = r.nextInt(26);
     }
@@ -25,16 +25,22 @@ public class CaesarEncrypter implements KeyedEncrypter {
     public static void main(){
         String message;
         Scanner scan = new Scanner(System.in);
-        System.out.println("Please enter the key: ");
-        int key = Integer.parseInt(scan.nextLine().trim());
-        CaesarEncrypter encrypter1 = new CaesarEncrypter(key);
+        System.out.println("Please enter the key(leave empty for random): ");
+        CaesarEncrypter encrypter;
+        String keyStr = scan.nextLine().trim();
+        if(keyStr.equals("")) {
+            encrypter = new CaesarEncrypter();
+        } else {
+            int key = Integer.parseInt(keyStr);
+            encrypter = new CaesarEncrypter(key);
+        }
         InputStream in = Util.getInputStream(scan);
         PrintStream out = new PrintStream(Util.getOutputStream(scan));
         if(in == System.in) {
             System.out.println("Enter the message(Ctrl+D to end):");
         }
         message = Util.readWholeStream(in);
-        out.println(encrypter1.encrypt(message));
+        out.println(encrypter.encrypt(message));
     }
 
     @Override

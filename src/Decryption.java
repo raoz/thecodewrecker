@@ -29,20 +29,6 @@ public class Decryption implements Comparable<Decryption> {
         return confidence;
     }
 
-    /**
-     * @return The plain-test result of decryption
-     */
-    public String getPlaintext() {
-        return plaintext;
-    }
-
-    /**
-     * @return The decrypter used to generate this decryption
-     */
-    public Decrypter getCreator() {
-        return creator;
-    }
-
     @Override
     public int compareTo(Decryption o) {
         return Double.compare(this.confidence, o.confidence);

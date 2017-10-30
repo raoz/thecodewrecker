@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CodeWrecker {
+class CodeWrecker {
     public static void main(String[] args) {
         main();
     }

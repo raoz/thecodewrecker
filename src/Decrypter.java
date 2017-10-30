@@ -6,7 +6,7 @@ import static java.util.Comparator.comparing;
 /**
  * An interface for a Decrypter, implementations of this should have a static findBest method.
  */
-public interface Decrypter {
+interface Decrypter {
     /**
      * A static list of different decrypter functions
      */
@@ -38,5 +38,6 @@ public interface Decrypter {
      * @param analysis The analysis to analyse the decryption with
      * @return A Decryption containing the decrypted string
      */
+    @SuppressWarnings("unused")
     Decryption decrypt(String s, Analysis analysis);
 }

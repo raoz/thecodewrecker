@@ -4,8 +4,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MarkovAnalysis<T> implements Analysis{
-    private Function<String, List<T>> tokenizer;
-    private Map<T, Map<T, Long>> markovOccTable = new HashMap<>();
+    private final Function<String, List<T>> tokenizer;
+    private final Map<T, Map<T, Long>> markovOccTable = new HashMap<>();
     private T lastToken = null;
 
     /**
@@ -48,14 +48,18 @@ public class MarkovAnalysis<T> implements Analysis{
         return freqTable;
     }
 
+    /**
+     * @param tokenizer Function to convert string to tokens
+     */
     public MarkovAnalysis(Function<String, List<T>> tokenizer) {
         this.tokenizer = tokenizer;
     }
 
     /**
      * @param s String to analyse
+     * @param tokenizer Function to convert string to tokens
      */
-   public MarkovAnalysis(String s, Function<String, List<T>> tokenizer) {
+    private MarkovAnalysis(String s, Function<String, List<T>> tokenizer) {
        this.tokenizer = tokenizer;
        addData(s);
    }
@@ -112,7 +116,7 @@ public class MarkovAnalysis<T> implements Analysis{
     }
 
 
-    public double similarity(MarkovAnalysis<T> other) {
+    double similarity(MarkovAnalysis<T> other) {
         Map<T, Map<T, Double>> f1 = this.getData();
         Map<T, Map<T, Double>> f2 = other.getData();
         Set<T> tokens = Stream.concat(f1.keySet().stream(), f2.keySet().stream()).collect(Collectors.toSet());

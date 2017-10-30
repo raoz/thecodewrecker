@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Class for natural language tools
  */
-public class NaturalLanguage {
+class NaturalLanguage {
     private static final Pattern reverseSyllablePattern = Pattern.compile(
             "[bcdfghjklmnpqrstvwxz]*[aeiouy]+[bcdfghjklmnpqrstvwxz]?([bcdfghjklmnpqrstvwxz]*\b)?");
     /**
