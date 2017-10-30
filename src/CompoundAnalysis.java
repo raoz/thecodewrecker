@@ -24,4 +24,9 @@ public class CompoundAnalysis implements Analysis{
     public void fromString(String lines) {
         //TODO
     }
+
+    @Override
+    public void addData(String data) {
+        analyses.stream().forEach(a -> a.addData(data));
+    }
 }

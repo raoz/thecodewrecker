@@ -15,6 +15,7 @@ public class MarkovAnalysis<T> implements Analysis{
      * Add data to the occurrence Markov table
      * @param s String to tokenize and add
      */
+    @Override
     public void addData(String s) {
         List<T> tokens = tokenizer.apply(s);
         if(lastToken != null) {

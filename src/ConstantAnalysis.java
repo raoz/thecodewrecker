@@ -14,4 +14,8 @@ public class ConstantAnalysis implements Analysis {
     public void fromString(String lines) {
         c = Double.parseDouble(lines.trim());
     }
+
+    @Override
+    public void addData(String data) {
+    }
 }

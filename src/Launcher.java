@@ -26,7 +26,7 @@ public class Launcher {
             default:
                 System.out.println("Enter an integer in range [1..3]");
                 main(args);
-                break;
+                return;
         }
     }
     public static void frequencyModule(String[] args) throws Exception {
