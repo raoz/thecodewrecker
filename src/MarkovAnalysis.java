@@ -117,7 +117,7 @@ public class MarkovAnalysis<T> implements Analysis{
                 token = read.apply(l.trim());
                 sOccTable = new HashMap<>();
             } else {
-                String[] split = l.split(" \n");
+                String[] split = l.trim().split("\t");
                 assert sOccTable != null;
                 sOccTable.put(read.apply(split[0]),Long.parseLong(split[1]));
             }
