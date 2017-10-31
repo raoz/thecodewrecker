@@ -65,7 +65,6 @@ public class FrequencyAnalysis<T> implements Analysis{
             throw new IllegalStateException("Frequency analysis has no occurrence table.");
         }
         freqMap = null; //Reset the frequency map
-        data = data.toUpperCase();
         List<T> tokens = tokenizer.apply(data);
         for (T token : tokens) {
             if (occMap.containsKey(token)) {

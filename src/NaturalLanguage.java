@@ -18,10 +18,10 @@ class NaturalLanguage {
      * @return List of syllables in order.
      */
     static List<String> naiveSyllables(String s) {
-        String normalized = Normalizer.normalize(s, Normalizer.Form.NFD);
+        String normalized = Normalizer.normalize(s.toUpperCase(), Normalizer.Form.NFD);
         String stripped = normalized.replaceAll("[^A-Za-z\\s]+", ""); //Remove unnecessary characters
         String reverse = new StringBuilder(stripped).reverse().toString(); //Reverse the string
-        Matcher revM = reverseSyllablePattern.matcher(reverse.toLowerCase()); //Find the reverse syllables
+        Matcher revM = reverseSyllablePattern.matcher(reverse); //Find the reverse syllables
         ArrayList<String> syllables = new ArrayList<>();
         while(revM.find()){ //Add them to the list
             syllables.add(0, Util.reverseString(revM.group()));
@@ -35,7 +35,7 @@ class NaturalLanguage {
      * @return List of characters in the string
      */
     static List<Character> characters(String s) {
-        return Normalizer.normalize(s, Normalizer.Form.NFD) //convert into normal form
+        return Normalizer.normalize(s.toUpperCase(), Normalizer.Form.NFD) //convert into normal upper case form
                 .replaceAll("[^A-Za-z]", "")  //remove non-alphabetic
                 .chars().mapToObj(c -> (char)c).collect(Collectors.toList()); //Create a list of characters
     }
