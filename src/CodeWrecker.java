@@ -16,7 +16,7 @@ class CodeWrecker {
     public static void main() {
         Scanner scan = new Scanner(System.in);
 
-        //Build the analusis
+        //Build the analysis
         System.out.println("Enter a comma separated list of analysis files:");
         String[] filenames = scan.nextLine().trim().split(",");
         CompoundAnalysis analysis = new CompoundAnalysis(new ArrayList<>());

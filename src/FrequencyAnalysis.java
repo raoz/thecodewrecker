@@ -9,7 +9,7 @@ public class FrequencyAnalysis<T> implements Analysis{
      */
     private Map<T, Double> freqMap = new HashMap<>();
     /**
-     * Occurance map: For each element, number of times it has occured
+     * Occurrence map: For each element, number of times it has occurred
      */
     private Map<T, Long> occMap = new HashMap<>();
     /**
@@ -30,7 +30,7 @@ public class FrequencyAnalysis<T> implements Analysis{
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append("MarkovAnalysis\n");
-        b.append(freqMap.keySet().stream().findFirst().orElse(null).getClass().getSimpleName()); //HACK, get the type of first key in map
+        b.append(tokenizer.apply("abc").get(0).getClass().getSimpleName()); //HACK, get the type of tokenizer output
         b.append('\n');
         getMap().forEach((key, value) -> {
             b.append(key);
