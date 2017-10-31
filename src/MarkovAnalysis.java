@@ -158,6 +158,6 @@ public class MarkovAnalysis<T> implements Analysis{
                     ).sum() / subTokens.size();
         }
         difference = difference / tokens.size();
-        return 1 - difference;
+        return f1.size()/f2.size()*(1 - difference); //TODO: implement a more reasonable scaling control
     }
 }
