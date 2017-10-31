@@ -83,6 +83,7 @@ public class MarkovAnalysis<T> implements Analysis{
         StringBuilder b = new StringBuilder();
         b.append("MarkovAnalysis\n");
         b.append(lastToken.getClass().getSimpleName());
+        b.append('\n');
         for (Map.Entry<T, Map<T, Long>> mSub : markovOccTable.entrySet()) {
             b.append(mSub.getKey());
             b.append('\n');
