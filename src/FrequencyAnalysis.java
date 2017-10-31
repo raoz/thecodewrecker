@@ -30,7 +30,7 @@ public class FrequencyAnalysis<T> implements Analysis{
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append("MarkovAnalysis\n");
-        b.append(tokenizer.apply("abc").get(0).getClass().getSimpleName()); //HACK, get the type of tokenizer output
+        b.append(tokenizer.apply("miaou").get(0).getClass().getSimpleName()); //HACK, get the type of tokenizer output
         b.append('\n');
         getMap().forEach((key, value) -> {
             b.append(key);

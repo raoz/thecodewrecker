@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 class NaturalLanguage {
     //TODO: Convert to forwards pattern (reverse pattern is more intuitive, but less efficient
     private static final Pattern reverseSyllablePattern = Pattern.compile(
-            "[bcdfghjklmnpqrstvwxz]*[aeiouy]+[bcdfghjklmnpqrstvwxz]?([bcdfghjklmnpqrstvwxz]*\b)?");
+            "[BCDFGHJKLMNPQRSTVWXZ]*[AEIOUY]+[BCDFGHJKLMNPQRSTVWXZ]?([BCDFGHJKLMNPQRSTVWXZ]*\b)?");
     /**
      * Gets syllables, naïvely, ignoring language
      * @param s String to get syllables from
