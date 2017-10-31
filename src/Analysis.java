@@ -30,13 +30,13 @@ public interface Analysis {
         Scanner sc = new Scanner(s);
         Analysis a;
         if(sc.nextLine().trim().equals("MarkovAnalysis")) {
-            if(sc.nextLine().trim().equals("Character")) {
+            if(sc.nextLine().trim().startsWith("Character")) {
                 a = new MarkovAnalysis<>(NaturalLanguage::characters);
             } else{
                 a = new MarkovAnalysis<>(NaturalLanguage::naiveSyllables);
             }
         } else {
-            if(sc.nextLine().trim().equals("Character")) {
+            if(sc.nextLine().trim().startsWith("Character")) {
                 a = new FrequencyAnalysis<>(NaturalLanguage::characters);
             } else {
                 a = new FrequencyAnalysis<>(NaturalLanguage::naiveSyllables);

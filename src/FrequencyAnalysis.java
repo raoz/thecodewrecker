@@ -30,7 +30,7 @@ public class FrequencyAnalysis<T> implements Analysis{
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append("MarkovAnalysis\n");
-        b.append(freqMap.keySet().stream().findFirst().getClass().getSimpleName()); //HACK, get the type of first key in map
+        b.append(freqMap.keySet().stream().findFirst().orElse(null).getClass().getSimpleName()); //HACK, get the type of first key in map
         getMap().forEach((key, value) -> {
             b.append(key);
             b.append('\t');
