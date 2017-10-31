@@ -80,9 +80,9 @@ public class MarkovAnalysis<T> implements Analysis{
 
     @Override
     public String toString() {
-        System.out.println("MarkovAnalysis");
-        System.out.println(lastToken.getClass().getSimpleName());
         StringBuilder b = new StringBuilder();
+        b.append("MarkovAnalysis\n");
+        b.append(lastToken.getClass().getSimpleName());
         for (Map.Entry<T, Map<T, Long>> mSub : markovOccTable.entrySet()) {
             b.append(mSub.getKey());
             b.append('\n');

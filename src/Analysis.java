@@ -37,9 +37,9 @@ public interface Analysis {
             }
         } else {
             if(sc.nextLine().trim().equals("Character")) {
-                a = new MarkovAnalysis<>(NaturalLanguage::characters);
+                a = new FrequencyAnalysis<>(NaturalLanguage::characters);
             } else {
-                a = new MarkovAnalysis<>(NaturalLanguage::naiveSyllables);
+                a = new FrequencyAnalysis<>(NaturalLanguage::naiveSyllables);
             }
         }
         a.fromString(s.replaceFirst(".*\n.*\n", ""));

@@ -47,7 +47,7 @@ class CodeWrecker {
             }
         }
 
-        System.out.println("Text to encrypt");
+        System.out.println("Text to decypher");
         InputStream in = Util.getInputStream(scan);
         PrintStream out = new PrintStream(Util.getOutputStream(scan));
         Decryption[] ds = Decrypter.findBest(Util.readWholeStream(in), n, analysis);
