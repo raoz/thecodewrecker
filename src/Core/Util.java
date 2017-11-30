@@ -25,7 +25,7 @@ public class Util {
      * @param <R> Return type of the function
      */
     @FunctionalInterface
-    interface TriFunction<T,U,V,R> {
+    public interface TriFunction<T,U,V,R> {
         /**
          * Applies the function to given arguments
          */

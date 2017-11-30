@@ -8,7 +8,7 @@ import static java.util.Comparator.comparing;
 /**
  * An interface for a Core.Decrypter, implementations of this should have a static findBest method.
  */
-interface Decrypter {
+public interface Decrypter {
     /**
      * A static list of different decrypter functions
      */

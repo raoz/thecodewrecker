@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class Analysis {
+class Analysis {
     /**
      * Interactive Core.Analysis generation
      */

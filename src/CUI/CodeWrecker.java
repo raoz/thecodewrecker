@@ -1,4 +1,7 @@
-package Core;
+package CUI;
+
+import Core.*;
+import Core.Analysis;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,7 +10,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CodeWrecker {
+class CodeWrecker {
     public static void main(String[] args) {
         main();
     }

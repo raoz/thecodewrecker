@@ -1,6 +1,5 @@
 package CUI;
 
-import Core.CodeWrecker;
 import Core.Util;
 
 import java.util.Scanner;

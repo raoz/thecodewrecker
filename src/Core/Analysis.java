@@ -1,9 +1,6 @@
 package Core;
 
-import java.io.*;
-import java.util.List;
 import java.util.Scanner;
-import java.util.function.Function;
 
 public interface Analysis {
     /**
