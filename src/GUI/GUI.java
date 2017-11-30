@@ -9,6 +9,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
 public class GUI extends Application {
 
     public static void main(String[] args) {
@@ -17,6 +19,7 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("strings");
         primaryStage.setTitle("CodeWrecker");
         primaryStage.show();
 
@@ -29,19 +32,19 @@ public class GUI extends Application {
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
 
-        Button decryptButton = new Button("Crack an encrypted string");
+        Button decryptButton = new Button(resourceBundle.getString("crack.an.encrypted.string"));
         HBox hbDecryptButton = new HBox(10);
         hbDecryptButton.setAlignment(Pos.CENTER);
         hbDecryptButton.getChildren().add(decryptButton);
         grid.add(hbDecryptButton, 1, 1);
 
-        Button encryptButton = new Button("Encrypt a string");
+        Button encryptButton = new Button(resourceBundle.getString("encrypt.a.string"));
         HBox hbEncryptButton = new HBox(10);
         hbEncryptButton.setAlignment(Pos.CENTER);
         hbEncryptButton.getChildren().add(encryptButton);
         grid.add(hbEncryptButton, 1, 2);
 
-        Button analysisButton = new Button("Generate an analysis table");
+        Button analysisButton = new Button(resourceBundle.getString("generate.an.analysis.table"));
         HBox hbAnalysisButton = new HBox(10);
         hbAnalysisButton.setAlignment(Pos.CENTER);
         hbAnalysisButton.getChildren().add(analysisButton);
