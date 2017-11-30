@@ -1,4 +1,4 @@
-MarkovAnalysis
+Core.MarkovAnalysis
 String
 NEAN
 	DER	6

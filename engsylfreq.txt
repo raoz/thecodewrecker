@@ -1,4 +1,4 @@
-MarkovAnalysis
+Core.MarkovAnalysis
 String
 KEWMRS	3.1341140919262806E-9
 RIEINN	3.1341140919262806E-9

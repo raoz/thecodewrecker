@@ -1,4 +1,4 @@
-MarkovAnalysis
+Core.MarkovAnalysis
 Character
 A
 	A	250369
