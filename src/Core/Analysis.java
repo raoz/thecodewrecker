@@ -47,30 +47,4 @@ public interface Analysis {
         a.fromString(s.replaceFirst(".*\n.*\n", ""));
         return a;
     }
-    /**
-     * Interactive Core.Analysis generation
-     */
-    @SuppressWarnings("unchecked")
-    static void main() {
-        Scanner scan = new Scanner(System.in);
-        //Get the token type
-        Function<String, List> t = Util.CUIOptions(scan, "Should the tokens be:",
-                Util.arr("Characters", "Syllables"), Util.arr(NaturalLanguage::characters, NaturalLanguage::naiveSyllables));
-        //Get the analysis type
-        Analysis a = Util.CUIOptions(scan,"Choose the type of table:", Util.arr("Frequency table", "Markov table"),
-                Util.arr(new FrequencyAnalysis(t), new MarkovAnalysis(t)));
-        //Get the IO
-        InputStream in = Util.getInputStream(scan);
-        PrintStream out = new PrintStream(Util.getOutputStream(scan));
-
-        if(in == System.in) {
-            //Prompt
-            System.out.println("Please enter the source text(Ctrl+D to end):");
-        }
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        //Read the input and process
-        br.lines().forEach(a::addData);
-        //Output the processed data
-        out.println(a.toString());
-    }
 }

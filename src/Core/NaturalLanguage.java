@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * Class for natural language tools
  */
-class NaturalLanguage {
+public class NaturalLanguage {
     //TODO: Convert to forwards pattern (reverse pattern is more intuitive, but less efficient
     private static final Pattern reverseSyllablePattern = Pattern.compile(
             "[BCDFGHJKLMNPQRSTVWXZ]*[AEIOUY]+[BCDFGHJKLMNPQRSTVWXZ]?([BCDFGHJKLMNPQRSTVWXZ]*\b)?");
@@ -19,7 +19,7 @@ class NaturalLanguage {
      * @param s String to get syllables from
      * @return List of syllables in order.
      */
-    static List<String> naiveSyllables(String s) {
+    public static List<String> naiveSyllables(String s) {
         String normalized = Normalizer.normalize(s.toUpperCase(), Normalizer.Form.NFD);
         String stripped = normalized.replaceAll("[^A-Za-z\\s]+", ""); //Remove unnecessary characters
         String reverse = new StringBuilder(stripped).reverse().toString(); //Reverse the string
@@ -36,7 +36,7 @@ class NaturalLanguage {
      * @param s String to convert
      * @return List of characters in the string
      */
-    static List<Character> characters(String s) {
+    public static List<Character> characters(String s) {
         return Normalizer.normalize(s.toUpperCase(), Normalizer.Form.NFD) //convert into normal upper case form
                 .replaceAll("[^A-Za-z]", "")  //remove non-alphabetic
                 .chars().mapToObj(c -> (char)c).collect(Collectors.toList()); //Create a list of characters

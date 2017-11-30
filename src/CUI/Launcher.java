@@ -1,7 +1,5 @@
 package CUI;
 
-import Core.Analysis;
-import Core.CaesarEncrypter;
 import Core.CodeWrecker;
 import Core.Util;
 
