@@ -1,3 +1,5 @@
+package Core;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +37,7 @@ public class CaesarDecrypter implements KeyedDecrypter {
      */
     @Override
     public Decryption decrypt(String s, Analysis analysis) {
-        //Decryption is the same as encryption with reverse key
+        //Core.Decryption is the same as encryption with reverse key
         CaesarEncrypter ce = new CaesarEncrypter(26-this.key);
         String plaintext = ce.encrypt(s);
         return new Decryption(plaintext, this, analysis.similarity(plaintext));
@@ -43,7 +45,7 @@ public class CaesarDecrypter implements KeyedDecrypter {
 
     @Override
     public String toString() {
-        return "CaesarDecrypter{" +
+        return "Core.CaesarDecrypter{" +
                 "key=" + key +
                 '}';
     }

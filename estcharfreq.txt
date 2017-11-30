@@ -1,4 +1,4 @@
-MarkovAnalysis
+Core.MarkovAnalysis
 Character
 A	0.14160149410655518
 B	0.00828825795076037

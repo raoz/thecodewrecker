@@ -1,10 +1,12 @@
+package Core;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
 
 /**
- * An interface for a Decrypter, implementations of this should have a static findBest method.
+ * An interface for a Core.Decrypter, implementations of this should have a static findBest method.
  */
 interface Decrypter {
     /**
@@ -20,7 +22,7 @@ interface Decrypter {
      *
      * @param s The string to find decryptions for
      * @param n The number of decryptions to find
-     * @param analysis Analysis to use for getting confidence and finding decrypters
+     * @param analysis Core.Analysis to use for getting confidence and finding decrypters
      * @return An array of the found decryptions
      */
     static Decryption[] findBest(String s, int n, Analysis analysis) {
@@ -36,7 +38,7 @@ interface Decrypter {
     /**
      * @param s The string to decrypt
      * @param analysis The analysis to analyse the decryption with
-     * @return A Decryption containing the decrypted string
+     * @return A Core.Decryption containing the decrypted string
      */
     @SuppressWarnings("unused")
     Decryption decrypt(String s, Analysis analysis);

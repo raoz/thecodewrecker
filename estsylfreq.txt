@@ -1,4 +1,4 @@
-MarkovAnalysis
+Core.MarkovAnalysis
 String
 NEAN	1.9225322056186644E-6
 NEAP	9.154915264850783E-8

@@ -1,4 +1,4 @@
-FrequencyAnalysis
+Core.FrequencyAnalysis
 Character
 A	0.08057093648197704
 B	0.015407166934610217

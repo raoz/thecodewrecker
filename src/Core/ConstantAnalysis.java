@@ -1,5 +1,7 @@
+package Core;
+
 /**
- * Analysis with constant output for testing
+ * Core.Analysis with constant output for testing
  */
 @SuppressWarnings("unused")
 public class ConstantAnalysis implements Analysis {

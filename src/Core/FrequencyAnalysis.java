@@ -1,3 +1,5 @@
+package Core;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,7 +31,7 @@ public class FrequencyAnalysis<T> implements Analysis{
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append("MarkovAnalysis\n");
+        b.append("Core.MarkovAnalysis\n");
         b.append(tokenizer.apply("miaou").get(0).getClass().getSimpleName()); //HACK, get the type of tokenizer output
         b.append('\n');
         getMap().forEach((key, value) -> {

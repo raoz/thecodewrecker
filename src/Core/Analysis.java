@@ -1,3 +1,5 @@
+package Core;
+
 import java.io.*;
 import java.util.List;
 import java.util.Scanner;
@@ -29,7 +31,7 @@ public interface Analysis {
     static Analysis getFromString(String s) {
         Scanner sc = new Scanner(s);
         Analysis a;
-        if(sc.nextLine().trim().equals("MarkovAnalysis")) {
+        if(sc.nextLine().trim().equals("Core.MarkovAnalysis")) {
             if(sc.nextLine().trim().startsWith("Character")) {
                 a = new MarkovAnalysis<>(NaturalLanguage::characters);
             } else{
@@ -46,7 +48,7 @@ public interface Analysis {
         return a;
     }
     /**
-     * Interactive Analysis generation
+     * Interactive Core.Analysis generation
      */
     @SuppressWarnings("unchecked")
     static void main() {

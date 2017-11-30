@@ -1,3 +1,5 @@
+package Core;
+
 /**
  * A object that can encrypt strings.
  */

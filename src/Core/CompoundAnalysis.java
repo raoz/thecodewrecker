@@ -1,3 +1,5 @@
+package Core;
+
 import java.util.List;
 
 /**
@@ -15,7 +17,7 @@ public class CompoundAnalysis implements Analysis{
 
     /**
      * Add an analysis to the collection
-     * @param a Analysis to add
+     * @param a Core.Analysis to add
      */
     public void addAnalysis(Analysis a) {
         analyses.add(a);

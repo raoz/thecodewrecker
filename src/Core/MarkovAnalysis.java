@@ -1,3 +1,5 @@
+package Core;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -81,7 +83,7 @@ public class MarkovAnalysis<T> implements Analysis{
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append("MarkovAnalysis\n");
+        b.append("Core.MarkovAnalysis\n");
         b.append(lastToken.getClass().getSimpleName());
         b.append('\n');
         for (Map.Entry<T, Map<T, Long>> mSub : markovOccTable.entrySet()) {

@@ -1,3 +1,5 @@
+package Core;
+
 /**
  * Representation of a decryption, containing the plaintext, the confidence, and the decrypter used
  */
@@ -8,7 +10,7 @@ public class Decryption implements Comparable<Decryption> {
 
     /**
      * @param plaintext The result of decryption
-     * @param creator The Decrypter used to decrypt
+     * @param creator The Core.Decrypter used to decrypt
      * @param confidence Likelihood of this being the correct decryption according to analysis
      */
     public Decryption(String plaintext, Decrypter creator, double confidence) {
@@ -20,7 +22,7 @@ public class Decryption implements Comparable<Decryption> {
 
     @Override
     public String toString() {
-        return "--------Decryption with confidence " + confidence + " and algorithm " + creator + "\n" + plaintext;
+        return "--------Core.Decryption with confidence " + confidence + " and algorithm " + creator + "\n" + plaintext;
     }
 
     /**
