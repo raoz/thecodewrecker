@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -14,14 +16,38 @@ import javafx.stage.Stage;
 import java.util.ResourceBundle;
 
 public class GUI extends Application {
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("strings");
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    public void crackView(Stage primaryStage) {
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Label strLabel = new Label(resourceBundle.getString("string.to.crack"));
+        TextField strField = new TextField();
+        HBox strHb = new HBox();
+        strHb.getChildren().addAll(strLabel, strField);
+        strHb.setSpacing(10);
+        grid.add(strHb, 1, 1);
+
+        Button crackButton = new Button(resourceBundle.getString("crack"));
+        HBox hbCrackButton = new HBox(10);
+        hbCrackButton.setAlignment(Pos.CENTER);
+        hbCrackButton.getChildren().add(crackButton);
+        grid.add(hbCrackButton, 1, 2);
+
+        Scene scene = new Scene(grid, 300, 275);
+        primaryStage.setScene(scene);
+    }
+
     @Override
     public void start(Stage primaryStage) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("strings");
         primaryStage.setTitle("CodeWrecker");
         primaryStage.show();
 
@@ -35,7 +61,7 @@ public class GUI extends Application {
         primaryStage.setScene(scene);
 
         Button decryptButton = new Button(resourceBundle.getString("crack.an.encrypted.string"));
-        //decryptButton.setOnMouseClicked(event -> crackView(primaryStage));
+        decryptButton.setOnMouseClicked(event -> crackView(primaryStage));
         HBox hbDecryptButton = new HBox(10);
         hbDecryptButton.setAlignment(Pos.CENTER);
         hbDecryptButton.getChildren().add(decryptButton);
