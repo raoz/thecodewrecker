@@ -4,13 +4,10 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
@@ -58,11 +55,12 @@ public class GUI extends Application {
         HBox hbBackButton = new HBox(10);
         hbBackButton.setAlignment(Pos.CENTER);
         hbBackButton.getChildren().add(backButton);
-        grid.add(hbBackButton, 1,7);
+        grid.add(hbBackButton, 1,8);
 
         Label strLabel = new Label(resourceBundle.getString("string.to.encrypt"));
-        TextField strField = new TextField();
-        HBox strHb = new HBox();
+        TextArea strField = new TextArea();
+        VBox strHb = new VBox();
+        strField.setPrefSize(300, 100);
         strHb.getChildren().addAll(strLabel, strField);
         strHb.setSpacing(10);
         grid.add(strHb, 1, 1);
@@ -88,8 +86,9 @@ public class GUI extends Application {
         grid.add(keyHb, 1, 3);
 
         Label textLabel = new Label(resourceBundle.getString("encrypted.text"));
-        TextField textField = new TextField();
-        HBox textHb = new HBox();
+        TextArea textField = new TextArea();
+        VBox textHb = new VBox();
+        textField.setPrefSize(300, 100);
         textHb.getChildren().addAll(textLabel, textField);
         textHb.setSpacing(10);
         grid.add(textHb, 1, 5);
@@ -101,20 +100,30 @@ public class GUI extends Application {
         hbEncryptButton.getChildren().add(encryptButton);
         grid.add(hbEncryptButton, 1,4);
 
+        Label fileLabel = new Label(resourceBundle.getString("file.write"));
+        TextField fileField = new TextField();
+        HBox fileHb = new HBox();
+        fileHb.getChildren().addAll(fileLabel, fileField);
+        fileHb.setSpacing(10);
+        grid.add(fileHb, 1, 7);
+
         Button writeButton = new Button(resourceBundle.getString("write.to.file"));
         writeButton.setOnMouseClicked(event -> {
             try {
                 Util.writeToFile(textField.getText());
+                fileField.setText(resourceBundle.getString("successful"));
+
             } catch (Exception e) {
-                e.printStackTrace();
+                fileField.setText(resourceBundle.getString("failed"));
             }
         });
+
         HBox hbWriteButton = new HBox(10);
         hbWriteButton.setAlignment(Pos.CENTER);
         hbWriteButton.getChildren().add(writeButton);
         grid.add(hbWriteButton, 1,6);
 
-        Scene scene = new Scene(grid, 300, 275);
+        Scene scene = new Scene(grid, 750, 500);
         primaryStage.setScene(scene);
     }
 
@@ -130,7 +139,7 @@ public class GUI extends Application {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Scene scene = new Scene(grid, 300, 275);
+        Scene scene = new Scene(grid, 750, 500);
         primaryStage.setScene(scene);
 
         Button decryptButton = new Button(resourceBundle.getString("crack.an.encrypted.string"));
