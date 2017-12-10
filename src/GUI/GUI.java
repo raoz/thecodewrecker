@@ -46,6 +46,53 @@ public class GUI extends Application {
         primaryStage.setScene(scene);
     }
 
+    public void encryptView(Stage primaryStage){
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Label strLabel = new Label(resourceBundle.getString("string.to.encrypt"));
+        TextField strField = new TextField();
+        HBox strHb = new HBox();
+        strHb.getChildren().addAll(strLabel, strField);
+        strHb.setSpacing(10);
+        grid.add(strHb, 1, 1);
+
+        Label keyLabel = new Label(resourceBundle.getString("key.to.use.for.encryption"));
+        TextField keyField = new TextField();
+        HBox keyHb = new HBox();
+        keyHb.getChildren().addAll(keyLabel, keyField);
+        keyHb.setSpacing(5);
+        grid.add(keyHb, 1, 2);
+
+        Label textLabel = new Label(resourceBundle.getString("encrypted.text"));
+        TextField textField = new TextField();
+        HBox textHb = new HBox();
+        textHb.getChildren().addAll(textLabel, textField);
+        textHb.setSpacing(10);
+        grid.add(textHb, 1, 4);
+        
+        Button encryptButton = new Button(resourceBundle.getString("encrypt"));
+        encryptButton.setOnMouseClicked(event -> textField.setText(CaesarEncrypter.main(strField.getText(), keyField.getText())));
+        HBox hbEncryptButton = new HBox(10);
+        hbEncryptButton.setAlignment(Pos.CENTER);
+        hbEncryptButton.getChildren().add(encryptButton);
+        grid.add(hbEncryptButton, 1,3);
+
+        Button writeButton = new Button(resourceBundle.getString("write.to.file"));
+        //writeButton.setOnMouseClicked(event -> CaesarEncrypter.main(strField.getText(), keyField.getText()));
+        HBox hbWriteButton = new HBox(10);
+        hbWriteButton.setAlignment(Pos.CENTER);
+        hbWriteButton.getChildren().add(writeButton);
+        grid.add(hbWriteButton, 1,5);
+
+        Scene scene = new Scene(grid, 300, 275);
+        primaryStage.setScene(scene);
+    }
+
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("CodeWrecker");
@@ -68,14 +115,15 @@ public class GUI extends Application {
         grid.add(hbDecryptButton, 1, 1);
 
         Button encryptButton = new Button(resourceBundle.getString("encrypt.a.string"));
-        encryptButton.setOnMouseClicked(event -> (new Alert(Alert.AlertType.INFORMATION, "Encrypt!", ButtonType.OK)).show());
+        encryptButton.setOnMouseClicked(event -> encryptView(primaryStage));
+        //encryptButton.setOnMouseClicked(event -> (new Alert(Alert.AlertType.INFORMATION, "Encrypt!", ButtonType.OK)).show());
         HBox hbEncryptButton = new HBox(10);
         hbEncryptButton.setAlignment(Pos.CENTER);
         hbEncryptButton.getChildren().add(encryptButton);
         grid.add(hbEncryptButton, 1, 2);
 
         Button analysisButton = new Button(resourceBundle.getString("generate.an.analysis.table"));
-        analysisButton.setOnMouseClicked(event -> (new Alert(Alert.AlertType.INFORMATION, "Here be an analysis table one day!", ButtonType.OK)).show()  );
+        analysisButton.setOnMouseClicked(event -> (new Alert(Alert.AlertType.INFORMATION, resourceBundle.getString("here.be.an.analysis.table.one.day"), ButtonType.OK)).show()  );
         HBox hbAnalysisButton = new HBox(10);
         hbAnalysisButton.setAlignment(Pos.CENTER);
         hbAnalysisButton.getChildren().add(analysisButton);
