@@ -16,13 +16,13 @@ import javafx.stage.Stage;
 import java.util.ResourceBundle;
 
 public class GUI extends Application {
-    ResourceBundle resourceBundle = ResourceBundle.getBundle("strings");
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("strings");
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public void crackView(Stage primaryStage) {
+    private void crackView(Stage primaryStage) {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -68,14 +68,14 @@ public class GUI extends Application {
         grid.add(hbDecryptButton, 1, 1);
 
         Button encryptButton = new Button(resourceBundle.getString("encrypt.a.string"));
-        encryptButton.setOnMouseClicked(event -> (new Alert(Alert.AlertType.INFORMATION, "Encrypt!", ButtonType.OK)).show());
+        encryptButton.setOnMouseClicked(event -> new Alert(Alert.AlertType.INFORMATION, "Encrypt!", ButtonType.OK).show());
         HBox hbEncryptButton = new HBox(10);
         hbEncryptButton.setAlignment(Pos.CENTER);
         hbEncryptButton.getChildren().add(encryptButton);
         grid.add(hbEncryptButton, 1, 2);
 
         Button analysisButton = new Button(resourceBundle.getString("generate.an.analysis.table"));
-        analysisButton.setOnMouseClicked(event -> (new Alert(Alert.AlertType.INFORMATION, "Here be an analysis table one day!", ButtonType.OK)).show()  );
+        analysisButton.setOnMouseClicked(event -> new Alert(Alert.AlertType.INFORMATION, "Here be an analysis table one day!", ButtonType.OK).show()  );
         HBox hbAnalysisButton = new HBox(10);
         hbAnalysisButton.setAlignment(Pos.CENTER);
         hbAnalysisButton.getChildren().add(analysisButton);
