@@ -91,7 +91,7 @@ public class GUI extends Application {
         Button writeButton = new Button(resourceBundle.getString("write.to.file"));
         writeButton.setOnMouseClicked(event -> {
             try {
-                CaesarEncrypter.writeToFile(textField.getText(), primaryStage);
+                Util.writeToFile(textField.getText());
             } catch (Exception e) {
                 e.printStackTrace();
             }
