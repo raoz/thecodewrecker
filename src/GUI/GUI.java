@@ -58,7 +58,7 @@ public class GUI extends Application {
         HBox hbBackButton = new HBox(10);
         hbBackButton.setAlignment(Pos.CENTER);
         hbBackButton.getChildren().add(backButton);
-        grid.add(hbBackButton, 1,6);
+        grid.add(hbBackButton, 1,7);
 
         Label strLabel = new Label(resourceBundle.getString("string.to.encrypt"));
         TextField strField = new TextField();
@@ -67,26 +67,39 @@ public class GUI extends Application {
         strHb.setSpacing(10);
         grid.add(strHb, 1, 1);
 
+        Button readButton = new Button(resourceBundle.getString("read.string.from.file"));
+        readButton.setOnMouseClicked(event -> {
+            try {
+                strField.setText(Util.readFromFile());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        HBox hbReadButton = new HBox(10);
+        hbReadButton.setAlignment(Pos.CENTER);
+        hbReadButton.getChildren().add(readButton);
+        grid.add(hbReadButton, 1, 2);
+
         Label keyLabel = new Label(resourceBundle.getString("key.to.use.for.encryption"));
         TextField keyField = new TextField();
         HBox keyHb = new HBox();
         keyHb.getChildren().addAll(keyLabel, keyField);
         keyHb.setSpacing(5);
-        grid.add(keyHb, 1, 2);
+        grid.add(keyHb, 1, 3);
 
         Label textLabel = new Label(resourceBundle.getString("encrypted.text"));
         TextField textField = new TextField();
         HBox textHb = new HBox();
         textHb.getChildren().addAll(textLabel, textField);
         textHb.setSpacing(10);
-        grid.add(textHb, 1, 4);
+        grid.add(textHb, 1, 5);
 
         Button encryptButton = new Button(resourceBundle.getString("encrypt"));
         encryptButton.setOnMouseClicked(event -> textField.setText(CaesarEncrypter.main(strField.getText(), keyField.getText())));
         HBox hbEncryptButton = new HBox(10);
         hbEncryptButton.setAlignment(Pos.CENTER);
         hbEncryptButton.getChildren().add(encryptButton);
-        grid.add(hbEncryptButton, 1,3);
+        grid.add(hbEncryptButton, 1,4);
 
         Button writeButton = new Button(resourceBundle.getString("write.to.file"));
         writeButton.setOnMouseClicked(event -> {
@@ -99,7 +112,7 @@ public class GUI extends Application {
         HBox hbWriteButton = new HBox(10);
         hbWriteButton.setAlignment(Pos.CENTER);
         hbWriteButton.getChildren().add(writeButton);
-        grid.add(hbWriteButton, 1,5);
+        grid.add(hbWriteButton, 1,6);
 
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
