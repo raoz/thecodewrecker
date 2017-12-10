@@ -26,7 +26,6 @@ class CaesarEncrypter {
     static void writeToFile(String message, Stage stage)throws Exception{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file to write to");
-        fileChooser.showOpenDialog(stage);
         File selectedFile = fileChooser.showSaveDialog(null);
         if (selectedFile != null){
             FileWriter writer = new FileWriter(selectedFile);
