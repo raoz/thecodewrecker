@@ -53,6 +53,13 @@ public class GUI extends Application {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
+        Button backButton = new Button(resourceBundle.getString("back"));
+        backButton.setOnMouseClicked(event -> start(primaryStage));
+        HBox hbBackButton = new HBox(10);
+        hbBackButton.setAlignment(Pos.CENTER);
+        hbBackButton.getChildren().add(backButton);
+        grid.add(hbBackButton, 1,6);
+
         Label strLabel = new Label(resourceBundle.getString("string.to.encrypt"));
         TextField strField = new TextField();
         HBox strHb = new HBox();
@@ -73,7 +80,7 @@ public class GUI extends Application {
         textHb.getChildren().addAll(textLabel, textField);
         textHb.setSpacing(10);
         grid.add(textHb, 1, 4);
-        
+
         Button encryptButton = new Button(resourceBundle.getString("encrypt"));
         encryptButton.setOnMouseClicked(event -> textField.setText(CaesarEncrypter.main(strField.getText(), keyField.getText())));
         HBox hbEncryptButton = new HBox(10);
@@ -82,7 +89,13 @@ public class GUI extends Application {
         grid.add(hbEncryptButton, 1,3);
 
         Button writeButton = new Button(resourceBundle.getString("write.to.file"));
-        //writeButton.setOnMouseClicked(event -> CaesarEncrypter.main(strField.getText(), keyField.getText()));
+        writeButton.setOnMouseClicked(event -> {
+            try {
+                CaesarEncrypter.writeToFile(textField.getText(), primaryStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         HBox hbWriteButton = new HBox(10);
         hbWriteButton.setAlignment(Pos.CENTER);
         hbWriteButton.getChildren().add(writeButton);

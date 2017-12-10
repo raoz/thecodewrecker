@@ -1,5 +1,10 @@
 package GUI;
 
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.*;
+
 class CaesarEncrypter {
     static String main(String message, String keyStr){
 
@@ -17,5 +22,17 @@ class CaesarEncrypter {
                 return "";
             }
         }
+    }
+    static void writeToFile(String message, Stage stage)throws Exception{
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open file to write to");
+        fileChooser.showOpenDialog(stage);
+        File selectedFile = fileChooser.showSaveDialog(null);
+        if (selectedFile != null){
+            FileWriter writer = new FileWriter(selectedFile);
+            writer.write(message);
+            writer.close();
+        }
+
     }
 }
