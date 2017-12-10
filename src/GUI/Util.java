@@ -32,4 +32,10 @@ public class Util {
         }
         return "";
     }
+    static String getFile() throws Exception{
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open analysis file");
+        File file = fileChooser.showOpenDialog(null);
+        return file.getName();
+    }
 }

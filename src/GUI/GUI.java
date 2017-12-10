@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GUI extends Application {
@@ -34,10 +35,32 @@ public class GUI extends Application {
         grid.add(strHb, 1, 1);
 
         Button crackButton = new Button(resourceBundle.getString("crack"));
+        //crackButton.setOnMouseClicked(event -> );
         HBox hbCrackButton = new HBox(10);
         hbCrackButton.setAlignment(Pos.CENTER);
         hbCrackButton.getChildren().add(crackButton);
         grid.add(hbCrackButton, 1, 2);
+
+        Label fileLabel = new Label(resourceBundle.getString("files.selected"));
+        TextField fileField = new TextField();
+        HBox fileHb = new HBox();
+        fileHb.getChildren().addAll(fileLabel, fileField);
+        fileHb.setSpacing(10);
+        grid.add(fileHb, 1, 4);
+
+        Button analysisButton = new Button(resourceBundle.getString("add.analysis.files"));
+        analysisButton.setOnMouseClicked(event -> {
+            try {
+                String file = Util.getFile();
+                fileField.setText(file + ";" + fileField.getText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        HBox hbAnalysisButton = new HBox(10);
+        hbAnalysisButton.setAlignment(Pos.CENTER);
+        hbAnalysisButton.getChildren().add(analysisButton);
+        grid.add(hbAnalysisButton, 1, 3);
 
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
