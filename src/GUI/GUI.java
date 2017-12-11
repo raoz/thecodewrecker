@@ -40,7 +40,7 @@ public class GUI extends Application {
         HBox numHb = new HBox();
         numHb.getChildren().addAll(numLabel, numField);
         numHb.setSpacing(10);
-        grid.add(numHb, 1,5);
+        grid.add(numHb, 1,4);
 
         Label crackedLabel = new Label(resourceBundle.getString("solutions"));
         TextArea  crackedField = new TextArea();
@@ -55,7 +55,7 @@ public class GUI extends Application {
         HBox fileHb = new HBox();
         fileHb.getChildren().addAll(fileLabel, fileField);
         fileHb.setSpacing(10);
-        grid.add(fileHb, 1, 4);
+        grid.add(fileHb, 1, 3);
 
         Button crackButton = new Button(resourceBundle.getString("crack"));
         crackButton.setOnMouseClicked(event -> {crackedField.setText("");
@@ -66,7 +66,7 @@ public class GUI extends Application {
         HBox hbCrackButton = new HBox(10);
         hbCrackButton.setAlignment(Pos.CENTER);
         hbCrackButton.getChildren().add(crackButton);
-        grid.add(hbCrackButton, 1, 2);
+        grid.add(hbCrackButton, 1, 5);
 
         Button analysisButton = new Button(resourceBundle.getString("add.analysis.files"));
         analysisButton.setOnMouseClicked(event -> {
@@ -80,7 +80,26 @@ public class GUI extends Application {
         HBox hbAnalysisButton = new HBox(10);
         hbAnalysisButton.setAlignment(Pos.CENTER);
         hbAnalysisButton.getChildren().add(analysisButton);
-        grid.add(hbAnalysisButton, 1, 3);
+        grid.add(hbAnalysisButton, 1, 2);
+
+        Button saveButton = new Button(resourceBundle.getString("save.solutions.to.file"));
+        saveButton.setOnMouseClicked(event -> {
+            try {
+                Util.writeToFile(crackedField.getText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        HBox hbSaveButton = new HBox(10);
+        hbSaveButton.getChildren().add(saveButton);
+        grid.add(hbSaveButton, 1, 7);
+
+        Button backButton = new Button(resourceBundle.getString("back"));
+        backButton.setOnMouseClicked(event -> start(primaryStage));
+        HBox hbBackButton = new HBox(10);
+        hbBackButton.setAlignment(Pos.CENTER);
+        hbBackButton.getChildren().add(backButton);
+        grid.add(hbBackButton, 1,8);
 
         Scene scene = new Scene(grid, 750, 500);
         primaryStage.setScene(scene);
