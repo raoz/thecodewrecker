@@ -1,5 +1,6 @@
 package GUI;
 
+import Core.Decryption;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -41,12 +42,13 @@ public class GUI extends Application {
         numHb.setSpacing(10);
         grid.add(numHb, 1,5);
 
-        Button crackButton = new Button(resourceBundle.getString("crack"));
-        //crackButton.setOnMouseClicked(event -> );
-        HBox hbCrackButton = new HBox(10);
-        hbCrackButton.setAlignment(Pos.CENTER);
-        hbCrackButton.getChildren().add(crackButton);
-        grid.add(hbCrackButton, 1, 2);
+        Label crackedLabel = new Label(resourceBundle.getString("solutions"));
+        TextArea  crackedField = new TextArea();
+        VBox crackedHb = new VBox(10);
+        crackedField.setPrefSize(300, 100);
+        crackedHb.getChildren().addAll(crackedLabel, crackedField);
+        crackedHb.setSpacing(10);
+        grid.add(crackedHb, 1, 6);
 
         Label fileLabel = new Label(resourceBundle.getString("files.selected"));
         TextField fileField = new TextField();
@@ -54,6 +56,17 @@ public class GUI extends Application {
         fileHb.getChildren().addAll(fileLabel, fileField);
         fileHb.setSpacing(10);
         grid.add(fileHb, 1, 4);
+
+        Button crackButton = new Button(resourceBundle.getString("crack"));
+        crackButton.setOnMouseClicked(event -> {crackedField.setText("");
+            Decryption[] ds = CodeWrecker.main(fileField.getText(), strField.getText(), numField.getText()); for(Decryption d : ds){
+                crackedField.setText(crackedField.getText() + " " + d);
+            }
+        });
+        HBox hbCrackButton = new HBox(10);
+        hbCrackButton.setAlignment(Pos.CENTER);
+        hbCrackButton.getChildren().add(crackButton);
+        grid.add(hbCrackButton, 1, 2);
 
         Button analysisButton = new Button(resourceBundle.getString("add.analysis.files"));
         analysisButton.setOnMouseClicked(event -> {
@@ -69,7 +82,7 @@ public class GUI extends Application {
         hbAnalysisButton.getChildren().add(analysisButton);
         grid.add(hbAnalysisButton, 1, 3);
 
-        Scene scene = new Scene(grid, 300, 275);
+        Scene scene = new Scene(grid, 750, 500);
         primaryStage.setScene(scene);
     }
 

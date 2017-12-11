@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class CodeWrecker {
-    public static void main(String s, String message, String number) {
-
-        Scanner scan = new Scanner(System.in);
+    public static Decryption[] main(String s, String message, String number) {
 
         //Build the analysis
         String[] filenames = s.split(";");
@@ -39,11 +37,10 @@ class CodeWrecker {
             }
             Decryption[] ds = Decrypter.findBest(message, n, analysis);
             //Fix output
-            for (Decryption d : ds) {
-                //
-            }
+            return ds;
         } catch (IllegalArgumentException e) {
             System.out.println("Incorrect number of solutions");
+            return null;
         }
     }
 }
