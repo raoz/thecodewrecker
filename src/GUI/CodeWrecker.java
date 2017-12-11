@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class CodeWrecker {
-    public static void main(String s, String message) {
+    public static void main(String s, String message, String number) {
 
         Scanner scan = new Scanner(System.in);
 
@@ -29,28 +29,21 @@ class CodeWrecker {
         }
         //Add the decrypters
         Decrypter.registerDecrypterFinder(CaesarDecrypter::findBest);
-        //TODO: Add more decrypters
 
         //Change where you get solutions amount
-        System.out.println("How many solutions to output? [1..26]");
-        int n = -1;
-        while(n == -1) {
-            try {
-                n = Integer.parseInt(scan.nextLine().trim());
-                if (n < 1 || n > 26) {
-                    throw new IllegalArgumentException("n must be in range [1..26]");
-                }
-            } catch (IllegalArgumentException e) {
-                n = -1;
-                System.out.println("Please enter a number between 1 and 26.");
-            }
-        }
 
-        PrintStream out = new PrintStream(Core.Util.getOutputStream(scan));
-        Decryption[] ds = Decrypter.findBest(message, n, analysis);
-        //Fix output
-        for (Decryption d : ds) {
-            out.println(d);
+        try {
+            int n = Integer.parseInt(number);
+            if (n < 1 || n > 26) {
+            throw new IllegalArgumentException("n must be in range [1..26]");
+            }
+            Decryption[] ds = Decrypter.findBest(message, n, analysis);
+            //Fix output
+            for (Decryption d : ds) {
+                //
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Incorrect number of solutions");
         }
     }
 }

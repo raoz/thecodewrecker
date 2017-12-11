@@ -34,6 +34,13 @@ public class GUI extends Application {
         strHb.setSpacing(10);
         grid.add(strHb, 1, 1);
 
+        Label numLabel = new Label(resourceBundle.getString("number.of.solutions.to.output"));
+        TextField numField = new TextField();
+        HBox numHb = new HBox();
+        numHb.getChildren().addAll(numLabel, numField);
+        numHb.setSpacing(10);
+        grid.add(numHb, 1,5);
+
         Button crackButton = new Button(resourceBundle.getString("crack"));
         //crackButton.setOnMouseClicked(event -> );
         HBox hbCrackButton = new HBox(10);
