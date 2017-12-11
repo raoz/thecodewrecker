@@ -10,6 +10,9 @@ public class CaesarEncrypter implements KeyedEncrypter {
 
     public CaesarEncrypter(int key) {
         super();
+        if(key >= 26 || key < 0) {
+            throw new IllegalArgumentException("Key must be in range [0,26]");
+        }
         this.key = key;
     }
 

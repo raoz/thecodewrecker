@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -28,8 +29,8 @@ class CaesarEncrypter {
                 int key = Integer.parseInt(keyStr);
                 encrypter = new Core.CaesarEncrypter(key);
                 return encrypter.encrypt(message);
-            } catch( Exception e ) {
-                System.out.println("Incorrect key error!");
+            } catch( NumberFormatException e ) {
+                Util.error(GUI.resourceBundle.getString("key.must.be.numeric"));
                 return "";
             }
         }
@@ -99,21 +100,20 @@ class CaesarEncrypter {
         hbEncryptButton.getChildren().add(encryptButton);
         grid.add(hbEncryptButton, 1,4);
 
-        Label fileLabel = new Label(GUI.resourceBundle.getString("file.write"));
-        TextField fileField = new TextField();
-        HBox fileHb = new HBox();
-        fileHb.getChildren().addAll(fileLabel, fileField);
-        fileHb.setSpacing(10);
-        grid.add(fileHb, 1, 7);
+        Label fileLabel = new Label("");
+        fileLabel.textAlignmentProperty().set(TextAlignment.CENTER);
+        fileLabel.setAlignment(Pos.CENTER);
+        grid.add(fileLabel, 1, 7);
 
         Button writeButton = new Button(GUI.resourceBundle.getString("write.to.file"));
         writeButton.setOnMouseClicked(event -> {
             try {
+                fileLabel.setText("");
                 Util.writeToFile(textField.getText());
-                fileField.setText(GUI.resourceBundle.getString("successful"));
+                fileLabel.setText(GUI.resourceBundle.getString("write.successful"));
 
             } catch (Exception e) {
-                fileField.setText(GUI.resourceBundle.getString("failed"));
+                fileLabel.setText(GUI.resourceBundle.getString("write.failed"));
             }
         });
 

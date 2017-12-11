@@ -1,5 +1,6 @@
 package GUI;
 
+import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -37,5 +38,14 @@ public class Util {
         fileChooser.setTitle("Open analysis file");
         File file = fileChooser.showOpenDialog(null);
         return file.getName();
+    }
+
+    static void error(String text) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(GUI.resourceBundle.getString("error"));
+        alert.setHeaderText(GUI.resourceBundle.getString("there.was.an.error"));
+        alert.setContentText(text);
+
+        alert.showAndWait();
     }
 }
