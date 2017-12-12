@@ -163,6 +163,9 @@ class CodeWrecker {
         //Build the analysis
         CompoundAnalysis analysis = new CompoundAnalysis(new ArrayList<>());
         analyses.forEach(analysis::addAnalysis);
+        if(Decrypter.decrypters.size() == 0) {
+            Decrypter.registerDecrypterFinder(CaesarDecrypter::findBest);
+        }
 
         try {
             //Number of solutions
