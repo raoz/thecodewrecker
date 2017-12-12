@@ -32,6 +32,9 @@ class CaesarEncrypter {
             } catch( NumberFormatException e ) {
                 Util.error(GUI.resourceBundle.getString("key.must.be.numeric"));
                 return "";
+            } catch (IllegalArgumentException e) {
+                Util.error(GUI.resourceBundle.getString("key.must.be.in.range.0.26"));
+                return "";
             }
         }
     }
@@ -49,6 +52,7 @@ class CaesarEncrypter {
             try {
                 app.start(primaryStage);
             } catch (Exception e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
             }
         });
@@ -70,6 +74,7 @@ class CaesarEncrypter {
             try {
                 strField.setText(Util.readFromFile());
             } catch (Exception e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
             }
         });

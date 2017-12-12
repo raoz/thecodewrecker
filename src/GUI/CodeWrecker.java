@@ -76,6 +76,7 @@ class CodeWrecker {
                 String file = Util.getFile();
                 fileField.setText(file + ";" + fileField.getText());
             } catch (Exception e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
             }
         });
@@ -89,6 +90,7 @@ class CodeWrecker {
             try {
                 Util.writeToFile(crackedField.getText());
             } catch (Exception e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
             }
         });
@@ -101,6 +103,7 @@ class CodeWrecker {
             try {
                 app.start(primaryStage);
             } catch (Exception e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
             }
         });

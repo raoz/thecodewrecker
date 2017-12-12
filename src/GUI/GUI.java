@@ -49,6 +49,7 @@ public class GUI extends Application {
             try {
                 CaesarEncrypter.encryptView(primaryStage, this);
             } catch (Exception e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
             }
         });

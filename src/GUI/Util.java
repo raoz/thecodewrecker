@@ -11,9 +11,9 @@ public class Util {
         fileChooser.setTitle("Open file to write to");
         File selectedFile = fileChooser.showSaveDialog(null);
         if (selectedFile != null){
-            FileWriter writer = new FileWriter(selectedFile);
-            writer.write(message);
-            writer.close();
+            try(FileWriter writer = new FileWriter(selectedFile)) {
+                writer.write(message);
+            }
         }
     }
     static String readFromFile() throws Exception{
@@ -21,15 +21,15 @@ public class Util {
         fileChooser.setTitle("Open file to read from");
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-            String line = br.readLine();
-            StringBuilder sb = new StringBuilder();
-            while (line != null) {
-                sb.append(line);
-                line = br.readLine();
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
+                String line = br.readLine();
+                StringBuilder sb = new StringBuilder();
+                while (line != null) {
+                    sb.append(line);
+                    line = br.readLine();
+                }
+                return sb.toString();
             }
-            br.close();
-            return sb.toString();
         }
         return "";
     }
