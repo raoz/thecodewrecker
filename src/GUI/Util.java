@@ -61,4 +61,13 @@ public class Util {
 
         alert.showAndWait();
     }
+
+    /**
+     * @return User's chosen file
+     */
+    public static File getOutFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(GUI.resourceBundle.getString("open.analysis.file"));
+        return fileChooser.showSaveDialog(null);
+    }
 }

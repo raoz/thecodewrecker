@@ -9,7 +9,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.io.File;
+import java.io.*;
+import java.util.List;
+import java.util.function.Function;
 
 public class Analysis {
     static void analysisView(Stage primaryStage, Application app) {
@@ -35,8 +37,8 @@ public class Analysis {
 
         Label inLabel = new Label(GUI.resourceBundle.getString("file.to.read.data.from"));
         TextField inFilenameField = new TextField("");
-        Button fileButton = new Button(GUI.resourceBundle.getString("choose.file"));
-        fileButton.setOnMouseClicked(event ->
+        Button inFileButton = new Button(GUI.resourceBundle.getString("choose.file"));
+        inFileButton.setOnMouseClicked(event ->
         {
             File f = null;  //ask user for file
             try {
@@ -48,21 +50,21 @@ public class Analysis {
             if(f == null) {
                 return; //No file
             }
-            inFilenameField.setText(f.getName()); //display file name
+            inFilenameField.setText(f.getAbsolutePath()); //display file name
         });
         HBox inFileBox = new HBox(10);
         inFileBox.setAlignment(Pos.CENTER);
-        inFileBox.getChildren().addAll(inLabel, inFilenameField, fileButton);
+        inFileBox.getChildren().addAll(inLabel, inFilenameField, inFileButton);
         grid.add(inFileBox, 1, 1);
 
         Label outLabel = new Label(GUI.resourceBundle.getString("file.to.write.table.to"));
         TextField outFilenameField = new TextField("");
         Button outfileButton = new Button(GUI.resourceBundle.getString("choose.file"));
-        fileButton.setOnMouseClicked(event ->
+        outfileButton.setOnMouseClicked(event ->
         {
             File f = null;  //ask user for file
             try {
-                f = Util.getFile();
+                f = Util.getOutFile();
             } catch (Exception e) {
                 Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
@@ -70,7 +72,7 @@ public class Analysis {
             if(f == null) {
                 return; //No file
             }
-            outFilenameField.setText(f.getName()); //display file name
+            outFilenameField.setText(f.getAbsolutePath()); //display file name
         });
         HBox outFileBox = new HBox(10);
         outFileBox.setAlignment(Pos.CENTER);
@@ -99,10 +101,46 @@ public class Analysis {
         typeBox.getChildren().addAll(typeLabel, freqType, markovType);
         grid.add(typeBox, 1, 4);
 
+
         Button goButton = new Button(GUI.resourceBundle.getString("analyse"));
+        goButton.onMouseClickedProperty().set(event -> {
+            Function<String, List> t;
+            if(tokenToggle.getSelectedToggle() == charToken) {
+                t = Core.NaturalLanguage::characters;
+            } else {
+                t = Core.NaturalLanguage::naiveSyllables;
+            }
+            Core.Analysis a;
+            if(typeToggle.getSelectedToggle() == freqType) {
+                a = new Core.FrequencyAnalysis(t);
+            }else{
+                a= new Core.MarkovAnalysis(t);
+            }
+            try {
+                main(new File(inFilenameField.getText()), new File(outFilenameField.getText()), a);
+            } catch (IOException e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
+                e.printStackTrace();
+            }
+        });
         grid.add(goButton, 1, 5);
 
         Scene scene = new Scene(grid, 750, 500);
         primaryStage.setScene(scene);
+    }
+    static void main(File inputFile, File outputFile, Core.Analysis a) throws IOException {
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile)))) {
+            br.lines().forEach(a::addData);
+
+            try(PrintStream pr = new PrintStream(new FileOutputStream(outputFile))) {
+                pr.println(a.toString());
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText(GUI.resourceBundle.getString("done"));
+
+            alert.showAndWait();
+
+        }
     }
 }
