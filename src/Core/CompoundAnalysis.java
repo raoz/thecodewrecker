@@ -30,6 +30,9 @@ public class CompoundAnalysis implements Analysis{
      */
     @Override
     public double similarity(String other) {
+        if(analyses.size() == 0) {
+            throw new IllegalStateException("CompundAnalysis cannot analyse with no analyses");
+        }
         return analyses.stream().mapToDouble(a->a.similarity(other)).sum() / analyses.size();
     }
 

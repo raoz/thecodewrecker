@@ -15,15 +15,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 class CodeWrecker {
     static void crackView(Stage primaryStage, Application app) {
+        final Map<String, Core.Analysis> analyses = new HashMap<>(); // List of filename->analysus
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -31,11 +29,26 @@ class CodeWrecker {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         Label strLabel = new Label(GUI.resourceBundle.getString("string.to.crack"));
-        TextField strField = new TextField();
+        TextArea decryptArea = new TextArea();
         HBox strHb = new HBox();
-        strHb.getChildren().addAll(strLabel, strField);
+        strHb.getChildren().addAll(strLabel, decryptArea);
         strHb.setSpacing(10);
         grid.add(strHb, 1, 1);
+
+        Button readButton = new Button(GUI.resourceBundle.getString("read.string.from.file"));
+        readButton.setOnMouseClicked(event -> {
+            try {
+                decryptArea.setText(Util.readFromFile());
+            } catch (Exception e) {
+                Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
+                e.printStackTrace();
+            }
+        });
+
+        HBox hbReadButton = new HBox(10);
+        hbReadButton.setAlignment(Pos.CENTER);
+        hbReadButton.getChildren().add(readButton);
+        grid.add(hbReadButton, 1, 0);
 
         Label numLabel = new Label(GUI.resourceBundle.getString("number.of.solutions.to.output"));
         TextField numField = new TextField();
@@ -53,16 +66,24 @@ class CodeWrecker {
         grid.add(crackedHb, 1, 6);
 
         Label fileLabel = new Label(GUI.resourceBundle.getString("files.selected"));
-        TextField fileField = new TextField();
+        TextField analysesField = new TextField();
         HBox fileHb = new HBox();
-        fileHb.getChildren().addAll(fileLabel, fileField);
+        VBox selectedFiles = new VBox();
+        fileHb.getChildren().addAll(fileLabel, selectedFiles);
         fileHb.setSpacing(10);
         grid.add(fileHb, 1, 3);
 
         Button crackButton = new Button(GUI.resourceBundle.getString("crack"));
-        crackButton.setOnMouseClicked(event -> {crackedField.setText("");
-            Decryption[] ds = CodeWrecker.main(fileField.getText(), strField.getText(), numField.getText()); for(Decryption d : ds){
-                crackedField.setText(crackedField.getText() + " " + d);
+        crackButton.setOnMouseClicked(event -> {
+            Decryption[] solutions = CodeWrecker.main(analyses.values(), decryptArea.getText(), numField.getText());
+            if (solutions == null) { //No solutions; something bad happened
+                crackedField.setText("");
+            } else {
+                crackedField.setText(
+                        Arrays.stream(solutions) //Take the solutions
+                                .map(Decryption::toString). //Convert to string
+                                collect(Collectors.joining("\n")) //Join with newlines
+                );
             }
         });
         HBox hbCrackButton = new HBox(10);
@@ -73,8 +94,29 @@ class CodeWrecker {
         Button analysisButton = new Button(GUI.resourceBundle.getString("add.analysis.files"));
         analysisButton.setOnMouseClicked(event -> {
             try {
-                String file = Util.getFile();
-                fileField.setText(file + ";" + fileField.getText());
+                File analysisFile = Util.getFile();
+                if(analysisFile == null) { //User pressed Cancel
+                    return;
+                }
+
+                //Convert to string
+                String analysisString = Core.Util.readWholeStream(new FileInputStream(analysisFile));
+                Core.Analysis analysis = Core.Analysis.getFromString(analysisString);
+                analyses.put(analysisFile.getName(), analysis);
+
+                HBox analysisEntry = new HBox();
+                Label analysisLabel = new Label(analysisFile.getName());
+                selectedFiles.getChildren().add(analysisEntry);
+                Button removeButton = new Button(GUI.resourceBundle.getString("remove"));
+                removeButton.setOnMouseClicked(event1 -> {
+                    analyses.remove(analysisFile.getName()); //Remove from list
+                    selectedFiles.getChildren().remove(analysisEntry); //Remove from display
+                });
+                analysisEntry.getChildren().addAll(analysisLabel, removeButton);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Util.error(GUI.resourceBundle.getString("invalid.analysis.file"));
+            } catch (IllegalArgumentException e) {
+                Util.error(GUI.resourceBundle.getString("invalid.analysis.file"));
             } catch (Exception e) {
                 Util.error(GUI.resourceBundle.getString("an.unknown.error.has.occured"));
                 e.printStackTrace();
@@ -115,36 +157,27 @@ class CodeWrecker {
         Scene scene = new Scene(grid, 750, 500);
         primaryStage.setScene(scene);
     }
-    public static Decryption[] main(String s, String message, String number) {
 
+
+    public static Decryption[] main(Collection<Analysis> analyses, String message, String number) {
         //Build the analysis
-        String[] filenames = s.split(";");
         CompoundAnalysis analysis = new CompoundAnalysis(new ArrayList<>());
-        for (String filename : filenames) {
-            try {
-                String data = Core.Util.readWholeStream(new FileInputStream(filename));
-                analysis.addAnalysis(Analysis.getFromString(data));
-            } catch (FileNotFoundException e) {
-                System.out.println("File not found: " + e.getMessage());
-                System.out.println("Ignoring.");
-            }
-        }
-        //Add the decrypters
-        Decrypter.registerDecrypterFinder(CaesarDecrypter::findBest);
-
-        //Change where you get solutions amount
+        analyses.forEach(analysis::addAnalysis);
 
         try {
+            //Number of solutions
             int n = Integer.parseInt(number);
             if (n < 1 || n > 26) {
-            throw new IllegalArgumentException("n must be in range [1..26]");
+                throw new IllegalArgumentException("n must be in range [1..26]");
             }
-            Decryption[] ds = Decrypter.findBest(message, n, analysis);
-            //Fix output
-            return ds;
+            return Decrypter.findBest(message, n, analysis);
+        } catch (IllegalStateException e) {
+            Util.error(GUI.resourceBundle.getString("no.analysis.files"));
+        } catch (IllegalFormatException e) {
+            Util.error(GUI.resourceBundle.getString("number.of.solutions.must.be.numeric"));
         } catch (IllegalArgumentException e) {
-            System.out.println("Incorrect number of solutions");
-            return null;
+            Util.error(GUI.resourceBundle.getString("incorrect.number.of.solutions.requested"));
         }
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package GUI;
 
+import Core.CaesarDecrypter;
+import Core.Decrypter;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,6 +20,8 @@ public class GUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
+        //Add the decrypters
+        Decrypter.registerDecrypterFinder(CaesarDecrypter::findBest);
     }
 
 
@@ -60,7 +64,7 @@ public class GUI extends Application {
         grid.add(hbEncryptButton, 1, 2);
 
         Button analysisButton = new Button(resourceBundle.getString("generate.an.analysis.table"));
-        analysisButton.setOnMouseClicked(event -> new Alert(Alert.AlertType.INFORMATION, "Here be an analysis table one day!", ButtonType.OK).show()  );
+        analysisButton.setOnMouseClicked(event -> Analysis.analysisView(primaryStage, this));
         HBox hbAnalysisButton = new HBox(10);
         hbAnalysisButton.setAlignment(Pos.CENTER);
         hbAnalysisButton.getChildren().add(analysisButton);

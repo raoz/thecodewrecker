@@ -12,10 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.*;
 
 class CaesarEncrypter {
     static String main(String message, String keyStr){
@@ -33,7 +30,7 @@ class CaesarEncrypter {
                 Util.error(GUI.resourceBundle.getString("key.must.be.numeric"));
                 return "";
             } catch (IllegalArgumentException e) {
-                Util.error(GUI.resourceBundle.getString("key.must.be.in.range.0.26"));
+                Util.error(GUI.resourceBundle.getString("key.must.be.in.range.26.26"));
                 return "";
             }
         }
@@ -99,7 +96,8 @@ class CaesarEncrypter {
         grid.add(textHb, 1, 5);
 
         Button encryptButton = new Button(GUI.resourceBundle.getString("encrypt"));
-        encryptButton.setOnMouseClicked(event -> textField.setText(CaesarEncrypter.main(strField.getText(), keyField.getText())));
+        encryptButton.setOnMouseClicked(event ->
+                textField.setText(CaesarEncrypter.main(strField.getText(), keyField.getText())));
         HBox hbEncryptButton = new HBox(10);
         hbEncryptButton.setAlignment(Pos.CENTER);
         hbEncryptButton.getChildren().add(encryptButton);
