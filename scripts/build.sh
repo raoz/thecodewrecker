@@ -12,9 +12,10 @@ NAME="codewrecker-${VERSION}"
 rm -rf build dist
 mkdir -p build/classes "dist/${NAME}"
 
-# Sources target Java 8 (IntelliJ project language level JDK_1_8)
+# Sources target Java 8 (IntelliJ project language level JDK_1_8). The GUI
+# uses JavaFX, so compile with a JDK 8 that bundles it (e.g. Zulu jdk+fx).
 find src -name '*.java' > build/sources.txt
-javac --release 8 -encoding UTF-8 -Xlint:unchecked -d build/classes @build/sources.txt
+javac -source 1.8 -target 1.8 -encoding UTF-8 -Xlint:unchecked -d build/classes @build/sources.txt
 
 # Resource bundles used by the GUI
 cp src/*.properties build/classes/

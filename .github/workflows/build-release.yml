@@ -14,10 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The GUI is JavaFX (part of Oracle JDK 8 back then). Temurin ships no
+      # JavaFX, so use Zulu JDK 8 with the bundled FX ("jdk+fx") to compile.
       - uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '17'
+          distribution: zulu
+          java-version: '8'
+          java-package: jdk+fx
 
       - name: Determine version
         id: version
@@ -50,9 +53,9 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           cat > release-notes.md <<NOTES
-          CodeWrecker ${VERSION}, built from source by GitHub Actions (Temurin JDK 17, compiled for Java 8).
+          CodeWrecker ${VERSION}, built from source by GitHub Actions (Zulu JDK 8 with JavaFX).
 
-          Contains \`thecodewrecker.jar\` (GUI) plus the English and Estonian frequency/Markov tables. Unzip and run with any Java 8+ runtime:
+          Contains \`thecodewrecker.jar\` (GUI) plus the English and Estonian frequency/Markov tables. Unzip and run with a Java 8 runtime that includes JavaFX (e.g. Oracle Java 8, Zulu or Liberica "FX" builds; on Java 11+ add the OpenJFX modules):
 
           \`\`\`
           java -jar thecodewrecker.jar
