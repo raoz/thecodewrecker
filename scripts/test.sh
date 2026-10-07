@@ -33,4 +33,13 @@ for tables in estcharfreq.txt estsylfreq.txt data/estcharmarkov.txt data/estsylm
     status=1
   fi
 done
+# test.dec was generated with the Estonian syllable table; the whole output
+# (all 5 ranked solutions and confidences) must be reproduced exactly.
+if cmp -s build/test/estsylfreq.dec test.dec; then
+  echo "PASS: output with estsylfreq.txt is identical to test.dec"
+else
+  echo "FAIL: output with estsylfreq.txt differs from test.dec"
+  diff test.dec build/test/estsylfreq.dec | head -n 20 || true
+  status=1
+fi
 exit $status
