@@ -114,6 +114,6 @@ jobs:
           docker run --rm --network none -v "\$PWD:/src" -w /src $IMAGE:$N bash scripts/build.sh 0.0.0
           \`\`\`
           NOTES
-          gh release create "build-env-$N" ./* --target "$GITHUB_SHA" \
+          gh release create "build-env-$N" ./* -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --prerelease --latest=false \
             --title "Archived build environment $N" --notes-file "$RUNNER_TEMP/notes.md"
