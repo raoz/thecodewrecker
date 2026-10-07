@@ -35,7 +35,8 @@ jobs:
         run: bash scripts/test.sh "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar"
 
       - name: Check jar manifest
-        run: unzip -p "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar" META-INF/MANIFEST.MF | grep -q '^Main-Class: GUI.GUI'
+        run: |
+          unzip -p "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar" META-INF/MANIFEST.MF | grep -q '^Main-Class: GUI.GUI'
 
       - uses: actions/upload-artifact@v4
         with:
