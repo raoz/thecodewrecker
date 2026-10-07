@@ -51,7 +51,7 @@ jobs:
             echo "Source: $ZULU_URL (sha256 $ZULU_SHA256)"
             echo "Azul Zulu builds of OpenJDK are licensed under GPLv2 with the Classpath Exception"
             echo "(and other licences listed below) and may be redistributed. Copied unchanged from the tarball."
-            for f in $(cd "$RUNNER_TEMP/zulu/$ZULU_DIR" && find . -maxdepth 1 -type f | sort); do
+            for f in $(cd "$RUNNER_TEMP/zulu/$ZULU_DIR" && find . -maxdepth 1 -type f ! -name '*.zip' \( -iname '*licen*' -o -iname '*readme*' -o -iname '*exception*' -o -iname '*disclaimer*' -o -iname '*notice*' \) | sort); do
               echo; echo "================ $f ================"; cat "$RUNNER_TEMP/zulu/$ZULU_DIR/$f"
             done
           } > "$RUNNER_TEMP/out/ZULU-LICENSE-NOTICE.txt"
