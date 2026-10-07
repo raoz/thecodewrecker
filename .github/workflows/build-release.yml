@@ -8,19 +8,30 @@ on:
 permissions:
   contents: write
 
+env:
+  # Archived toolchain (Zulu JDK 8 + JavaFX), see release build-env-1 and
+  # .buildenv/Dockerfile. The build never downloads a JDK from upstream.
+  BUILD_ENV: build-env-1
+  BUILD_IMAGE: ghcr.io/raoz/buildenv-thecodewrecker:1
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      # The GUI is JavaFX (part of Oracle JDK 8 back then). Temurin ships no
-      # JavaFX, so use Zulu JDK 8 with the bundled FX ("jdk+fx") to compile.
-      - uses: actions/setup-java@v4
-        with:
-          distribution: zulu
-          java-version: '8'
-          java-package: jdk+fx
+      - name: Load archived build environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          d="$RUNNER_TEMP/buildenv"
+          gh release download "$BUILD_ENV" -D "$d" -p 'buildenv-*.tar.zst.part-*' -p SHA256SUMS
+          cd "$d"
+          grep -E '  buildenv-.*\.tar\.zst\.part-[0-9]+$' SHA256SUMS > parts.sha256
+          [ "$(wc -l < parts.sha256)" -ge 1 ] && [ "$(ls buildenv-*.tar.zst.part-* | wc -l)" -eq "$(wc -l < parts.sha256)" ]
+          sha256sum -c parts.sha256
+          cat $(cut -d' ' -f3 parts.sha256 | sort) | zstd -dc | docker load
+          rm -rf "$d"
 
       - name: Determine version
         id: version
@@ -31,17 +42,25 @@ jobs:
             echo "version=dev-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
           fi
 
+      # All build and test commands run inside the archived toolchain with
+      # the checkout mounted and no network.
       - name: Build
-        run: bash scripts/build.sh "${{ steps.version.outputs.version }}"
+        run: |
+          docker run --rm --network none -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src "$BUILD_IMAGE" \
+            bash scripts/build.sh "${{ steps.version.outputs.version }}"
 
       - name: Test (headless console cracker)
-        run: bash scripts/test.sh "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar"
+        run: |
+          docker run --rm --network none -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src "$BUILD_IMAGE" \
+            bash scripts/test.sh "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar"
 
       - name: Check jar manifest
         run: |
-          unzip -p "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar" META-INF/MANIFEST.MF | grep -q '^Main-Class: GUI.GUI'
+          docker run --rm --network none -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src "$BUILD_IMAGE" \
+            unzip -p "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar" META-INF/MANIFEST.MF \
+            | grep -q '^Main-Class: GUI.GUI'
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: codewrecker-${{ steps.version.outputs.version }}
           path: dist/codewrecker-${{ steps.version.outputs.version }}.zip
@@ -53,7 +72,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           cat > release-notes.md <<NOTES
-          CodeWrecker ${VERSION}, built from source by GitHub Actions (Zulu JDK 8 with JavaFX).
+          CodeWrecker ${VERSION}, built from source by GitHub Actions (Zulu JDK 8 with JavaFX, from the archived build environment ${BUILD_ENV}).
 
           Contains \`thecodewrecker.jar\` (GUI) plus the English and Estonian frequency/Markov tables. Unzip and run with a Java 8 runtime that includes JavaFX (e.g. Oracle Java 8, Zulu or Liberica "FX" builds; on Java 11+ add the OpenJFX modules):
 

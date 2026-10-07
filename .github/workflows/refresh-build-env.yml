@@ -1,0 +1,119 @@
+name: Refresh build environment
+
+# Manual only. Builds the toolchain image from .buildenv/Dockerfile, pushes it
+# to GHCR and archives it (docker save | zstd) as assets of a new prerelease
+# `build-env-<N>`. build-release.yml builds only from that archive.
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Build environment number N (creates release build-env-N and image tag N)'
+        required: true
+        default: '1'
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  IMAGE: ghcr.io/raoz/buildenv-thecodewrecker
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check input
+        env:
+          GH_TOKEN: ${{ github.token }}
+          N: ${{ inputs.env }}
+        run: |
+          [[ "$N" =~ ^[1-9][0-9]*$ ]] || { echo "env must be a positive integer"; exit 1; }
+          if gh release view "build-env-$N" >/dev/null 2>&1; then
+            echo "Release build-env-$N already exists; choose a new number."; exit 1
+          fi
+          echo "N=$N" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/out"
+
+      - name: Download and verify Zulu JDK 8 + FX tarball
+        run: |
+          arg() { sed -n "s/^ARG $1=//p" .buildenv/Dockerfile; }
+          ZULU_URL=$(arg ZULU_URL); ZULU_SHA256=$(arg ZULU_SHA256); ZULU_DIR=$(arg ZULU_DIR)
+          name=$(basename "$ZULU_URL")
+          curl -fsSL --retry 5 -o "$RUNNER_TEMP/out/$name" "$ZULU_URL"
+          echo "$ZULU_SHA256  $RUNNER_TEMP/out/$name" | sha256sum -c -
+          cp "$RUNNER_TEMP/out/$name" .buildenv/zulu.tar.gz
+          # Licence notice to ship beside the tarball.
+          mkdir -p "$RUNNER_TEMP/zulu" && tar -xzf "$RUNNER_TEMP/out/$name" -C "$RUNNER_TEMP/zulu"
+          {
+            echo "Licence notices for $name"
+            echo "Source: $ZULU_URL (sha256 $ZULU_SHA256)"
+            echo "Azul Zulu builds of OpenJDK are licensed under GPLv2 with the Classpath Exception"
+            echo "(and other licences listed below) and may be redistributed. Copied unchanged from the tarball."
+            for f in $(cd "$RUNNER_TEMP/zulu/$ZULU_DIR" && find . -maxdepth 1 -type f | sort); do
+              echo; echo "================ $f ================"; cat "$RUNNER_TEMP/zulu/$ZULU_DIR/$f"
+            done
+          } > "$RUNNER_TEMP/out/ZULU-LICENSE-NOTICE.txt"
+          echo "ZULU_NAME=$name" >> "$GITHUB_ENV"
+          echo "ZULU_URL=$ZULU_URL" >> "$GITHUB_ENV"
+
+      - name: Build image
+        run: docker build --no-cache --pull -t "$IMAGE:$N" .buildenv
+
+      - name: Push to GHCR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "$GH_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker push "$IMAGE:$N"
+          digest=$(docker image inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$IMAGE:$N" | grep "^$IMAGE@" | head -n1 | cut -d@ -f2)
+          echo "DIGEST=$digest" >> "$GITHUB_ENV"
+          echo "IMAGE_ID=$(docker image inspect --format '{{.Id}}' "$IMAGE:$N")" >> "$GITHUB_ENV"
+          docker logout ghcr.io
+
+      - name: Archive image
+        run: |
+          cd "$RUNNER_TEMP/out"
+          base="buildenv-thecodewrecker-$N.tar.zst"
+          docker save "$IMAGE:$N" | zstd -T0 -19 -q -o "$base"
+          echo "ARCHIVE_SIZE=$(stat -c %s "$base")" >> "$GITHUB_ENV"
+          echo "ARCHIVE_SHA256=$(sha256sum "$base" | cut -d' ' -f1)" >> "$GITHUB_ENV"
+          # Parts below the 2 GiB release-asset limit.
+          split -b 1900M -d -a 2 "$base" "$base.part-"
+          rm "$base"
+          docker run --rm --network none "$IMAGE:$N" cat /buildenv-packages.txt > packages.txt
+          sha256sum -- * > SHA256SUMS
+          ls -l; cat SHA256SUMS
+
+      - name: Create release build-env-N
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd "$RUNNER_TEMP/out"
+          cat > "$RUNNER_TEMP/notes.md" <<NOTES
+          Archived build environment $N for thecodewrecker. Toolchain only: no repository source, no secrets.
+          \`build-release.yml\` downloads these assets, checks SHA256SUMS, runs \`docker load\` and builds with \`docker run --network none\`.
+
+          **Contents**
+          - \`buildenv-thecodewrecker-$N.tar.zst.part-*\`: \`docker save\` of \`$IMAGE:$N\`, compressed with zstd -19 and split into parts (whole archive: $ARCHIVE_SIZE bytes, sha256 \`$ARCHIVE_SHA256\`). Image: Debian trixie-slim (pinned digest) + zip/unzip from snapshot.debian.org + Azul Zulu JDK 8.0.504 with JavaFX at \`/opt/zulu8-fx\`.
+          - \`$ZULU_NAME\`: the original Zulu tarball, unchanged, from $ZULU_URL.
+          - \`ZULU-LICENSE-NOTICE.txt\`: licence notices from that tarball. Zulu is GPLv2 with the Classpath Exception and may be redistributed; corresponding source is the OpenJDK 8u source (https://github.com/openjdk/jdk8u).
+          - \`packages.txt\`: Debian packages in the image. \`SHA256SUMS\`: checksums of all assets.
+          - Recipe: \`.buildenv/Dockerfile\` at commit $GITHUB_SHA.
+
+          **Image**
+          - Registry digest: \`$IMAGE@$DIGEST\`
+          - Image ID: \`$IMAGE_ID\`
+
+          **Restore**
+          \`\`\`
+          gh release download build-env-$N -R $GITHUB_REPOSITORY
+          sha256sum -c SHA256SUMS
+          cat buildenv-thecodewrecker-$N.tar.zst.part-* | zstd -dc | docker load
+          docker run --rm --network none -v "\$PWD:/src" -w /src $IMAGE:$N bash scripts/build.sh 0.0.0
+          \`\`\`
+          NOTES
+          gh release create "build-env-$N" ./* --target "$GITHUB_SHA" \
+            --prerelease --latest=false \
+            --title "Archived build environment $N" --notes-file "$RUNNER_TEMP/notes.md"

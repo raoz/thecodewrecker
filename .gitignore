@@ -127,3 +127,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,linux,windows,intellij
+# Toolchain tarball fetched by refresh-build-env.yml
+/.buildenv/*.tar.gz
