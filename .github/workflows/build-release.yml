@@ -1,0 +1,65 @@
+name: Build and release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=dev-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        run: bash scripts/build.sh "${{ steps.version.outputs.version }}"
+
+      - name: Test (headless console cracker)
+        run: bash scripts/test.sh "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar"
+
+      - name: Check jar manifest
+        run: unzip -p "dist/codewrecker-${{ steps.version.outputs.version }}/thecodewrecker.jar" META-INF/MANIFEST.MF | grep -q '^Main-Class: GUI.GUI'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codewrecker-${{ steps.version.outputs.version }}
+          path: dist/codewrecker-${{ steps.version.outputs.version }}.zip
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          cat > release-notes.md <<NOTES
+          CodeWrecker ${VERSION}, built from source by GitHub Actions (Temurin JDK 17, compiled for Java 8).
+
+          Contains \`thecodewrecker.jar\` (GUI) plus the English and Estonian frequency/Markov tables. Unzip and run with any Java 8+ runtime:
+
+          \`\`\`
+          java -jar thecodewrecker.jar
+          \`\`\`
+
+          Console version: \`java -cp thecodewrecker.jar CUI.CUI\`
+
+          Breaks Caesar ciphers. Known issue: letters with diacritics (ä, õ, ü) are not handled.
+          NOTES
+          gh release create "$GITHUB_REF_NAME" "dist/codewrecker-${VERSION}.zip" \
+            --title "CodeWrecker ${VERSION}" --notes-file release-notes.md --verify-tag
